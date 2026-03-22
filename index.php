@@ -2,5 +2,5 @@
 
 hbdbcndafdh
 
-meron bug sa branch nato
+fix na tong branch na to
 ?>
