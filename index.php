@@ -1,6 +1,6 @@
 <?php
 
-hbdbcndafdh
+echo "hbdbcndafdh
 
-fix na tong branch na to
+fix na tong branch na to";
 ?>
