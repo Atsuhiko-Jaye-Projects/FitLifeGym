@@ -1,10 +1,15 @@
 <?php 
+include_once '../../../../config/core.php'; 
 
-$page_title = "work plans";
-include '../layout/header.php';
-include '../layout/sidebar.php'; 
+// Require login BEFORE output
+$require_login = true;
+include_once "../../../../login_checker.php";
 
+// Page setup
+$page_title = "workout plans";
 
+// Load header AFTER login check
+include_once '../../layout/header.php'; 
 ?>
 
 <div class="col-md-9 col-lg-10 p-4">
@@ -56,4 +61,4 @@ include_once "workout_plans_modal/custom_plan_modal.php";
 include_once "workout_plans_modal/intermidiate_plan_modal.php"; 
 ?>
 
-<?php include '../layout/footer.php'; ?>
+<?php include '../../../../layout/footer.php'; ?>

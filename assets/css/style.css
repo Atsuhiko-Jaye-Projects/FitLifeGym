@@ -56,3 +56,17 @@ body {
     color: white !important;
 }
 
+.box {
+    background: #1e293b; /* dark card background */
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    min-height: 200px;
+}
+
+/* Optional spacing between columns */
+.row > div {
+    margin-bottom: 15px;
+}
+
+
+

@@ -1,10 +1,18 @@
-<?php include '../layout/header.php'; ?>
-<?php include '../layout/sidebar.php'; ?>
+<?php 
+include_once '../../config/core.php'; 
+
+
+$require_login = true;
+include_once "../../login_checker.php";
+
+$page_title = "index";
+include 'layout/header.php'; 
+?>
 
 <div class="col-md-9 col-lg-10 p-4">
 
     <div class="hero mb-4 text-white">
-        <h1>Welcome Back!</h1>
+        <h1>Welcome Back <?php echo $_SESSION['firstname']; ?>! </h1>
         <p>Your personal fitness hub — track, train & transform.</p>
     </div>
 
@@ -42,4 +50,4 @@
 
 </div>
 
-<?php include '../layout/footer.php'; ?>
+<?php include 'layout/footer.php'; ?>

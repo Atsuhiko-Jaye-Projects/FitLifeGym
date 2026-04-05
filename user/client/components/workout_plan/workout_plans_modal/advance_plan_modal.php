@@ -4,20 +4,20 @@
 
       <!-- HEADER -->
       <div class="modal-header border-0 align-items-start">
-        <div class="info-strip mb-4">
-          <div>
-            <span>Date</span>
-            <strong><?php echo date("M d, Y"); ?></strong>
-          </div>
-          <div>
-            <span>Duration</span>
-            <strong>20–30 min</strong>
-          </div>
-          <div>
-            <span>Level</span>
-            <strong>Beginner</strong>
-          </div>
+      <div class="info-strip d-flex gap-4">
+        <div class="ms-3">
+          <span>Date</span>
+          <strong><?php echo date("M d, Y"); ?></strong>
         </div>
+        <div>
+          <span>Duration</span>
+          <strong>20–30 min</strong>
+        </div>
+        <div>
+          <span>Level</span>
+          <strong>Beginner</strong>
+        </div>
+      </div>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
 
