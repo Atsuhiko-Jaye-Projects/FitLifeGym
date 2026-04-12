@@ -1,99 +1,15 @@
 <?php
-// =====================================
-// CONFIG (replace with real data later)
-// =====================================
-$bmi_category = "underweight"; // underweight | normal | overweight | obese
-$level = "beginner"; // beginner | intermediate
 
-$plan = [];
+$fitnessLevel = "Beginner";
+$bmiCategory = $category;
 
-// =====================================
-// PLAN LOGIC (SWITCH)
-// =====================================
-switch($level) {
+$plan = $workout_plan->getWorkoutPlanPreset($bmiCategory, $fitnessLevel);
 
-  case "beginner":
+$plan_intensity = $plan['intensity'] ?? '';
+$plan_focus = $plan['focus'] ?? '';
+$plan_duration = $plan['session_duration'] ?? '';
+$plan_day_per_week = $plan['days_per_week'] ?? '';
 
-    switch($bmi_category) {
-
-      case "normal":
-        $plan = [
-          ["Push Ups", "Upper body strength", "10"],
-          ["Squats", "Lower body", "15"],
-          ["Plank", "Core stability", "30s"]
-        ];
-        break;
-
-      case "overweight":
-        $plan = [
-          ["Modified Push Ups", "Beginner friendly", "8"],
-          ["Squats", "Lower body", "10"],
-          ["Brisk Walking", "Cardio", "10 min"]
-        ];
-        break;
-
-      case "obese":
-        $plan = [
-          ["Wall Push Ups", "Low impact", "8"],
-          ["Chair Squats", "Assisted", "8"],
-          ["Slow Walking", "Light cardio", "5–10 min"]
-        ];
-        break;
-
-      case "underweight":
-        $plan = [
-          ["Push Ups", "Strength", "12"],
-          ["Squats", "Muscle gain", "15"],
-          ["Dumbbell Curl", "Arms", "10"]
-        ];
-        break;
-    }
-
-  break;
-
-
-  case "intermediate":
-
-    switch($bmi_category) {
-
-      case "normal":
-        $plan = [
-          ["Push Ups", "Upper body", "15"],
-          ["Squats", "Legs", "20"],
-          ["Plank", "Core", "45s"],
-          ["Burpees", "Full body", "10"]
-        ];
-        break;
-
-      case "overweight":
-        $plan = [
-          ["Push Ups", "Strength", "10"],
-          ["Squats", "Legs", "15"],
-          ["Plank", "Core", "30s"],
-          ["Brisk Walking", "Cardio", "15 min"]
-        ];
-        break;
-
-      case "obese":
-        $plan = [
-          ["Wall Push Ups", "Low impact", "10"],
-          ["Chair Squats", "Assisted", "10"],
-          ["Seated Marching", "Cardio", "2 min"]
-        ];
-        break;
-
-      case "underweight":
-        $plan = [
-          ["Push Ups", "Strength", "15"],
-          ["Squats", "Muscle gain", "20"],
-          ["Dumbbell Curl", "Arms", "12"],
-          ["Plank", "Core", "40s"]
-        ];
-        break;
-    }
-
-  break;
-}
 ?>
 
 <!-- ===================================== -->
@@ -105,75 +21,89 @@ switch($level) {
 
       <!-- HEADER -->
       <div class="modal-header border-0 align-items-start">
-        <div class="info-strip d-flex gap-4">
-          <div class="ms-3">
-            <span>Date</span>
-            <strong><?php echo date("M d, Y"); ?></strong>
-          </div>
-          <div>
-            <span>Duration</span>
-            <strong>20–30 min</strong>
-          </div>
-          <div>
-            <span>Level</span>
-            <strong><?= ucfirst($level) ?></strong>
-          </div>
+
+    <div class="info-strip row text-white w-100 mx-0 mb-3">
+
+        <div class="col-md-4 col-12 mb-2 mb-md-0">
+            <div class="p-3 rounded bg-dark bg-opacity-50 text-center h-100">
+                <small class="text-white-50 d-block">📅 Date</small>
+                <strong><?= date("M d, Y"); ?></strong>
+            </div>
         </div>
+
+        <div class="col-md-4 col-12 mb-2 mb-md-0">
+            <div class="p-3 rounded bg-dark bg-opacity-50 text-center h-100">
+                <small class="text-white-50 d-block">⏱ Session Duration</small>
+                <strong><?= $plan_duration; ?> mins</strong>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-12">
+            <div class="p-3 rounded bg-dark bg-opacity-50 text-center h-100">
+                <small class="text-white-50 d-block">🔥 Level</small>
+                <strong><?= ucfirst($fitnessLevel) ?></strong>
+            </div>
+        </div>
+
+    </div>
+
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
 
       <!-- BODY -->
       <div class="modal-body">
 
-        <form action="save_plan.php" method="POST">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+        <div id="hiddenInputsContainer"></div>
+        <input type="hidden" id="session_duration" name="session_duration">
+        <input type="hidden" name="plan_type" value="<?= htmlspecialchars($fitnessLevel) ?>">
+        <input type="hidden" name="bmi_category" value="<?= htmlspecialchars($bmiCategory) ?>">
+        <input type="hidden" name="plan_name" value="<?= htmlspecialchars($plan_focus ?? '') ?>">
+        <input type="hidden" name="bmi_value" value="<?= htmlspecialchars($BMI_value) ?>">
+        <input type="hidden" name="day_per_week" value="<?= htmlspecialchars($plan_day_per_week) ?>">
+        <div class="modal-body">
+            <div id="beginnerBody">
+                <p>Loading...</p>
+                <!-- hidden meta -->
+                
+                <!-- INFO STRIP -->
+                <div class="info-strip mb-4">
 
-          <!-- hidden meta -->
-          <input type="hidden" name="plan_type" value="<?= $level ?>">
-          <input type="hidden" name="bmi_category" value="<?= $bmi_category ?>">
+                  <div>
+                    <span>Days / Week</span>
+                    <strong><?= $plan_day_per_week; ?></strong>
+                  </div>
 
-          <!-- INFO STRIP -->
-          <div class="info-strip mb-4">
-            <div>
-              <span>Duration</span>
-              <strong>20–30 min</strong>
-            </div>
-            <div>
-              <span>Level</span>
-              <strong><?= ucfirst($level) ?></strong>
-            </div>
-            <div>
-              <span>Focus</span>
-              <strong>Full Body</strong>
-            </div>
-          </div>
+                  <div>
+                    <span>Intensity</span>
+                    <strong><?= ucfirst($plan_intensity); ?></strong>
+                  </div>
 
-          <!-- WORKOUT LIST -->
-          <div class="exercise-list">
-            <?php foreach($plan as $exercise): ?>
-              <div class="exercise-item">
-                <div>
-                  <p class="mb-0"><?= $exercise[0] ?></p>
-                  <small><?= $exercise[1] ?></small>
+                  <div>
+                    <span>Focus</span>
+                    <strong><?= ucfirst($plan_focus); ?></strong>
+                  </div>
+
                 </div>
-                <strong><?= $exercise[2] ?></strong>
-              </div>
-            <?php endforeach; ?>
-          </div>
 
-          <!-- Hidden values (dynamic) -->
-          <?php foreach($plan as $i => $exercise): ?>
-            <input type="hidden" name="exercise<?= $i ?>" value="<?= $exercise[0] ?>">
-          <?php endforeach; ?>
+                <!-- WORKOUT LIST -->
+                <div class="exercise-list">
+                  <!-- TODO: render exercises here -->
+                </div>
 
-          <!-- ACTION -->
-          <button type="submit" class="btn modern-btn w-100 mt-4">
-            Save Plan
-          </button>
+                <button type="submit" class="btn modern-btn w-100 mt-4">
+                  Save Plan
+                </button>
 
+                <button onclick="openBeginnerModal()" class="btn btn-primary mt-3">
+                    View Beginner Plan
+                </button>
+            </div>
+        </div>
+          
         </form>
 
       </div>
-
     </div>
   </div>
 </div>

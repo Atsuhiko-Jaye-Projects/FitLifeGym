@@ -33,7 +33,8 @@ if ($_POST) {
             $_SESSION['firstname'] = htmlspecialchars($user->firstname, ENT_QUOTES, 'UTF-8');
             $_SESSION['lastname'] = $user->lastname;
             $_SESSION['access_level'] = $user->access_level;
-
+            $_SESSION['first_time_logged_in'] = $user->first_time_logged_in;
+            $_SESSION['existing_plan'] = $user->existing_plan;
             if ($user->access_level == 'Admin') {
                 header("Location: {$home_url}admin/index.php?action=login_success");
             } else {

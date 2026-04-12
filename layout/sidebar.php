@@ -12,9 +12,9 @@
             <i class="bi bi-speedometer2 me-2"></i> Dashboard
         </a>
 
-        <a href="../pages/workout_plans.php" class="nav-link">
+        <!-- <a href="../pages/workout_plans.php" class="nav-link">
             <i class="bi bi-fire me-2"></i> Workout Plans
-        </a>
+        </a> -->
 
         <a href="../pages/progress_tracker.php" class="nav-link">
             <i class="bi bi-graph-up-arrow me-2"></i> Progress

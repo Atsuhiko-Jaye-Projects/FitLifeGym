@@ -18,6 +18,7 @@ else if(isset($page_title) && ($page_title=="Signin" || $page_title=="signup")){
 		header("Location: {$home_url}user/client/index.php?action=already_logged_in");
 	}
 }
+
 else{
 	// no problem, stay on current page
 }

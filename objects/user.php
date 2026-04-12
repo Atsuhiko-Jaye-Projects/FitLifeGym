@@ -13,6 +13,8 @@ class User{
     public $contact_no;
     public $modified_at;
     public $access_level;
+    public $existing_plan;
+    public $first_time_logged_in;
 
     public function __construct($db){
         $this->conn = $db;
@@ -91,10 +93,11 @@ class User{
         }
         return false; // available
     }
+
     // check if given email exist in the database
     function emailExists(){
         // query to check if email exists
-        $query = "SELECT id, firstname, lastname, password, access_level
+        $query = "SELECT id, firstname, lastname, password, access_level, first_time_logged_in, existing_plan
                 FROM " . $this->table_name . "
                 WHERE email_address = ?
                 LIMIT 0,1";
@@ -119,11 +122,27 @@ class User{
             $this->lastname = $row['lastname'];
             $this->password = $row['password'];
             $this->access_level = $row['access_level'];
+            $this->first_time_logged_in = $row['first_time_logged_in'];
+            $this->existing_plan = $row['existing_plan'];
             // return true because email exists in the database
             return true;
         }
         // return false if email does not exist in the database
         return false;
+    }
+
+    function updateFLI(){
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                  SET
+                    first_time_logged_in = 0
+                  WHERE
+                    id = :id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":id", $this->id);
+        $stmt->execute();
     }
 }
 

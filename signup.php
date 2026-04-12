@@ -29,6 +29,7 @@ if ($_POST) {
     if ($user->password != $confirm_password) {
         $message = "Passwords do not match!";
         $message_type = "error";
+        
     }else if($user->EmailAlreadyTaken()) {
         $message = "Email is already taken";
         $message_type = "error";
