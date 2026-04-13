@@ -146,10 +146,13 @@ include "gen_modal/add_bmi_modal.php";
                     </a>
                 </div>
 
-            <?php else: ?>
+            <?php 
+                else: 
+                
+            ?>
 
                 <!-- BMI DISPLAY -->
-                <h5 class="mb-3">📊 Your BMI Overview</h5>
+                <h5 class="mb-3">📊 Work Plan:</h5>
 
                 <div class="row text-center">
 

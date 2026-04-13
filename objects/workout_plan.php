@@ -40,6 +40,7 @@ class WorkOutPlan{
                     duration=:duration,
                     day_per_week=:day_per_week,
                     current_bmi=:current_bmi,
+                    status = 'Active',
                     created_at=:created_at";
 
         $stmt = $this->conn->prepare($query);
@@ -220,6 +221,26 @@ class WorkOutPlan{
 
         // ✅ DECODE RESPONSE
         $data = json_decode($response, true);
+    }
+
+    function getActiveWorkoutPlan(){
+
+        $query = "SELECT * FROM 
+                    " . $this->table_name ." 
+                    WHERE client_id = :client_id";
+        
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":client_id", $this->client_id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->workout_plan = $row['workout_plan'];
+        $this->workout_plan_id = $row['workout_plan_id'];
+        $this->workout_plan = $row['workout_plan'];
+
     }
 
 
