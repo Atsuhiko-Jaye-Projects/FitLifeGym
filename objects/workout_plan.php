@@ -239,7 +239,7 @@ class WorkOutPlan{
 
         $this->workout_plan = $row['workout_plan'];
         $this->workout_plan_id = $row['workout_plan_id'];
-        $this->workout_plan = $row['workout_plan'];
+        $this->level = $row['level'];
 
     }
 
