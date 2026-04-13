@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2026 at 06:36 PM
+-- Generation Time: Apr 13, 2026 at 02:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -94,18 +94,21 @@ CREATE TABLE `exercise_activities` (
 --
 
 INSERT INTO `exercise_activities` (`id`, `client_id`, `workout_plan_id`, `name`, `duration`, `units`, `cycle`, `set_per_exercise`, `day`, `created_at`, `modified_at`) VALUES
-(109, 1, 'WORKOUT_ZDS010_003404', 'Bodyweight Squats', 10, NULL, 2, 10, 'Monday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(110, 1, 'WORKOUT_ZDS010_003404', 'Walking or Stationary Jogging', 15, NULL, 0, 0, 'Monday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(111, 1, 'WORKOUT_ZDS010_003404', 'Chest Opener Stretch', 5, NULL, 2, 0, 'Monday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(112, 1, 'WORKOUT_ZDS010_003404', 'Pelvic Tilts', 5, NULL, 2, 10, 'Monday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(113, 1, 'WORKOUT_ZDS010_003404', 'Glute Bridges', 10, NULL, 2, 12, 'Wednesday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(114, 1, 'WORKOUT_ZDS010_003404', 'Brisk Walking or Cycling', 15, NULL, 0, 0, 'Wednesday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(115, 1, 'WORKOUT_ZDS010_003404', 'Shoulder Rolls and Arm Circles', 5, NULL, 1, 10, 'Wednesday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(116, 1, 'WORKOUT_ZDS010_003404', 'Hamstring Stretch', 5, NULL, 2, 0, 'Wednesday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(117, 1, 'WORKOUT_ZDS010_003404', 'Wall Push-ups', 10, NULL, 2, 10, 'Friday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(118, 1, 'WORKOUT_ZDS010_003404', 'Light Cardio (Jump Rope or Marching in Place)', 15, NULL, 0, 0, 'Friday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(119, 1, 'WORKOUT_ZDS010_003404', 'Cat-Cow Stretch for Mobility', 5, NULL, 1, 10, 'Friday', '2026-04-13 00:34:04', '2026-04-12 16:34:04'),
-(120, 1, 'WORKOUT_ZDS010_003404', 'Child’s Pose Stretch', 5, NULL, 2, 0, 'Friday', '2026-04-13 00:34:04', '2026-04-12 16:34:04');
+(31, 1, 'WORKOUT_FBQ341_203320', 'Walking or Marching in Place', 5, NULL, 0, 0, 'Monday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(32, 1, 'WORKOUT_FBQ341_203320', 'Bodyweight Squats', 0, NULL, 2, 10, 'Monday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(33, 1, 'WORKOUT_FBQ341_203320', 'Wall Push-Ups', 0, NULL, 2, 10, 'Monday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(34, 1, 'WORKOUT_FBQ341_203320', 'Seated Leg Lifts', 0, NULL, 2, 10, 'Monday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(35, 1, 'WORKOUT_FBQ341_203320', 'Gentle Stretching', 5, NULL, 0, 0, 'Monday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(36, 1, 'WORKOUT_FBQ341_203320', 'Walking or Marching in Place', 5, NULL, 0, 0, 'Wednesday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(37, 1, 'WORKOUT_FBQ341_203320', 'Chair Sit-to-Stand', 0, NULL, 2, 10, 'Wednesday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(38, 1, 'WORKOUT_FBQ341_203320', 'Incline Wall Push-Ups', 0, NULL, 2, 10, 'Wednesday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(39, 1, 'WORKOUT_FBQ341_203320', 'Bent Knee Sit-Ups for Core', 0, NULL, 2, 10, 'Wednesday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(40, 1, 'WORKOUT_FBQ341_203320', 'Gentle Stretching', 5, NULL, 0, 0, 'Wednesday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(41, 1, 'WORKOUT_FBQ341_203320', 'Walking or Marching in Place', 5, NULL, 0, 0, 'Friday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(42, 1, 'WORKOUT_FBQ341_203320', 'Standing Calf Raises', 0, NULL, 2, 10, 'Friday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(43, 1, 'WORKOUT_FBQ341_203320', 'Wall Push-Ups', 0, NULL, 2, 10, 'Friday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(44, 1, 'WORKOUT_FBQ341_203320', 'Seated Leg Lifts', 0, NULL, 2, 10, 'Friday', '2026-04-13 20:33:20', '2026-04-13 12:33:20'),
+(45, 1, 'WORKOUT_FBQ341_203320', 'Gentle Stretching', 5, NULL, 0, 0, 'Friday', '2026-04-13 20:33:20', '2026-04-13 12:33:20');
 
 -- --------------------------------------------------------
 
@@ -132,7 +135,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `password`, `contact_no`, `created_at`, `modified_at`, `access_level`, `first_time_logged_in`, `existing_plan`) VALUES
-(1, 'Alexis', 'Dumale', 'ajcodalify@gmail.com', '$2y$10$zPorEKYvwaPhsiT/c4myiuQLEoJ.NPxWEIKqzcSgIVbO9VTje5aNu', '09533307696', '2026-04-02 20:09:16', '2026-04-12 06:57:40', 'Client', 0, 0),
+(1, 'Alexis', 'Dumale', 'ajcodalify@gmail.com', '$2y$10$zPorEKYvwaPhsiT/c4myiuQLEoJ.NPxWEIKqzcSgIVbO9VTje5aNu', '09533307696', '2026-04-02 20:09:16', '2026-04-13 12:33:20', 'Client', 0, 1),
 (2, 'Alexis', 'De Leon', 'alexisdumale@gmail.com', '$2y$10$4C99ZivsNabiuyfhXb0fH.lcz6FukOriEsa664z8w5j19.xgY0Lqq', '09772639814', '2026-04-02 20:10:42', '2026-04-09 04:43:21', 'Client', 1, 0);
 
 -- --------------------------------------------------------
@@ -215,17 +218,16 @@ CREATE TABLE `workout_plans` (
   `day_per_week` int(11) DEFAULT NULL,
   `current_bmi` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `modified_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `workout_plans`
 --
 
-INSERT INTO `workout_plans` (`id`, `workout_plan_id`, `client_id`, `workout_plan`, `level`, `duration`, `day_per_week`, `current_bmi`, `created_at`, `modified_at`) VALUES
-(12, 'WORKOUT_KML334_003301', 1, 'Light strength training + cardio + mobility', 'Beginner', 4, 3, '21.22', '2026-04-13 00:33:01', '2026-04-12 16:33:01'),
-(13, 'WORKOUT_CLM525_003344', 1, 'Light strength training + cardio + mobility', 'Beginner', 4, 3, '21.22', '2026-04-13 00:33:44', '2026-04-12 16:33:44'),
-(14, 'WORKOUT_ZDS010_003404', 1, 'Light strength training + cardio + mobility', 'Beginner', 4, 3, '21.22', '2026-04-13 00:34:04', '2026-04-12 16:34:04');
+INSERT INTO `workout_plans` (`id`, `workout_plan_id`, `client_id`, `workout_plan`, `level`, `duration`, `day_per_week`, `current_bmi`, `created_at`, `modified_at`, `status`) VALUES
+(40, 'WORKOUT_FBQ341_203320', 1, 'Light strength training + cardio + mobility', 'Beginner', 4, 3, '21.22', '2026-04-13 20:33:20', '2026-04-13 12:33:20', 'Active');
 
 --
 -- Indexes for dumped tables
@@ -287,7 +289,7 @@ ALTER TABLE `bmi_records`
 -- AUTO_INCREMENT for table `exercise_activities`
 --
 ALTER TABLE `exercise_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -305,7 +307,7 @@ ALTER TABLE `workouts`
 -- AUTO_INCREMENT for table `workout_plans`
 --
 ALTER TABLE `workout_plans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
