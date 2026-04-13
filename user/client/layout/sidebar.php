@@ -17,10 +17,6 @@
             <i class='bi bi-speedometer2 me-2'></i> Dashboard
         </a>
 
-        <a href='{$base_url}user/client/components/workout_plan/workout_plans.php' class='nav-link'>
-            <i class='bi bi-fire me-2'></i> Workout Plans
-        </a>
-
         <a href='../pages/progress_tracker.php' class='nav-link'>
             <i class='bi bi-graph-up-arrow me-2'></i> Progress
         </a>";

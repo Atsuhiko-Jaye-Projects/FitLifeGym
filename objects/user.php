@@ -144,6 +144,20 @@ class User{
         $stmt->bindParam(":id", $this->id);
         $stmt->execute();
     }
+
+    function UpdatePlanStatus(){
+
+        $query = "UPDATE " . $this->table_name . "
+                  SET
+                  existing_plan = '1'
+                  WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":id", $this->id);
+        
+        $stmt->execute();
+    }
 }
 
 

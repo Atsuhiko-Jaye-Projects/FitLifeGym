@@ -1,94 +1,102 @@
+<?php
 
+$fitnessLevel = "Advanced";
+$bmiCategory = $category;
 
+$plan = $workout_plan->getWorkoutPlanPreset($bmiCategory, $fitnessLevel);
+
+$plan_intensity = $plan['intensity'] ?? '';
+$plan_focus = $plan['focus'] ?? '';
+$plan_duration = $plan['session_duration'] ?? '';
+$plan_day_per_week = $plan['days_per_week'] ?? '';
+
+?>
+
+<!-- ===================================== -->
+<!-- MODAL -->
+<!-- ===================================== -->
 <div class="modal fade" id="advanceModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content modern-modal">
 
       <!-- HEADER -->
       <div class="modal-header border-0 align-items-start">
-      <div class="info-strip d-flex gap-4">
-        <div class="ms-3">
-          <span>Date</span>
-          <strong><?php echo date("M d, Y"); ?></strong>
+
+    <div class="info-strip row text-white w-100 mx-0 mb-3">
+
+        <div class="col-md-4 col-12 mb-2 mb-md-0">
+            <div class="p-3 rounded bg-dark bg-opacity-50 text-center h-100">
+                <small class="text-white-50 d-block">📅 Date</small>
+                <strong><?= date("M d, Y"); ?></strong>
+            </div>
         </div>
-        <div>
-          <span>Duration</span>
-          <strong>20–30 min</strong>
+
+        <div class="col-md-4 col-12 mb-2 mb-md-0">
+            <div class="p-3 rounded bg-dark bg-opacity-50 text-center h-100">
+                <small class="text-white-50 d-block">⏱ Session Duration</small>
+                <strong><?= $plan_duration; ?> mins</strong>
+            </div>
         </div>
-        <div>
-          <span>Level</span>
-          <strong>Beginner</strong>
+
+        <div class="col-md-4 col-12">
+            <div class="p-3 rounded bg-dark bg-opacity-50 text-center h-100">
+                <small class="text-white-50 d-block">🔥 Level</small>
+                <strong><?= ucfirst($fitnessLevel) ?></strong>
+            </div>
         </div>
-      </div>
+
+    </div>
+
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
 
       <!-- BODY -->
       <div class="modal-body">
 
-        <form action="save_plan.php" method="POST">
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
+        <div id="hiddenInputs_advanced"></div>
+        <input type="hidden" id="session_duration" name="session_duration">
+        <input type="hidden" name="plan_type" value="<?= htmlspecialchars($fitnessLevel) ?>">
+        <input type="hidden" name="bmi_category" value="<?= htmlspecialchars($bmiCategory) ?>">
+        <input type="hidden" name="plan_name" value="<?= htmlspecialchars($plan_focus ?? '') ?>">
+        <input type="hidden" name="bmi_value" value="<?= htmlspecialchars($BMI_value) ?>">
+        <input type="hidden" name="day_per_week" value="<?= htmlspecialchars($plan_day_per_week) ?>">
+        <div class="modal-body">
+            <div id="modalBody_advanced">
+                <p>Loading...</p>
+                <!-- hidden meta -->
+                
+                <!-- INFO STRIP -->
+                <div class="info-strip mb-4">
 
-          <input type="hidden" name="plan_type" value="beginner">
+                  <div>
+                    <span>Days / Week</span>
+                    <strong><?= $plan_day_per_week; ?></strong>
+                  </div>
 
-          <!-- INFO STRIP -->
-          <div class="info-strip mb-4">
-            <div>
-              <span>Duration</span>
-              <strong>20–30 min</strong>
+                  <div>
+                    <span>Intensity</span>
+                    <strong><?= ucfirst($plan_intensity); ?></strong>
+                  </div>
+
+                  <div>
+                    <span>Focus</span>
+                    <strong><?= ucfirst($plan_focus); ?></strong>
+                  </div>
+
+                </div>
+
+                <!-- WORKOUT LIST -->
+                <button type="submit" class="btn modern-btn w-100 mt-4">
+                  Save Plan
+                </button>
+
             </div>
-            <div>
-              <span>Level</span>
-              <strong>Beginner</strong>
-            </div>
-            <div>
-              <span>Focus</span>
-              <strong>Full Body</strong>
-            </div>
-          </div>
-
-          <!-- WORKOUT LIST -->
-          <div class="exercise-list">
-
-            <div class="exercise-item">
-              <div>
-                <p class="mb-0">Push Ups</p>
-                <small>Upper body strength</small>
-              </div>
-              <strong>10</strong>
-            </div>
-
-            <div class="exercise-item">
-              <div>
-                <p class="mb-0">Squats</p>
-                <small>Lower body</small>
-              </div>
-              <strong>15</strong>
-            </div>
-
-            <div class="exercise-item">
-              <div>
-                <p class="mb-0">Plank</p>
-                <small>Core stability</small>
-              </div>
-              <strong>30s</strong>
-            </div>
-
-          </div>
-
-          <!-- Hidden values -->
-          <input type="hidden" name="pushups" value="10">
-          <input type="hidden" name="squats" value="15">
-          <input type="hidden" name="plank" value="30">
-
-          <!-- ACTION -->
-          <button type="submit" class="btn modern-btn w-100 mt-4">
-            Save Plan
-          </button>
-
+        </div>
+          
         </form>
 
       </div>
-
     </div>
   </div>
 </div>

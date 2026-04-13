@@ -54,7 +54,7 @@ $plan_day_per_week = $plan['days_per_week'] ?? '';
       <div class="modal-body">
 
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
-        <div id="hiddenInputsContainer"></div>
+        <div id="hiddenInputs_beginner"></div>
         <input type="hidden" id="session_duration" name="session_duration">
         <input type="hidden" name="plan_type" value="<?= htmlspecialchars($fitnessLevel) ?>">
         <input type="hidden" name="bmi_category" value="<?= htmlspecialchars($bmiCategory) ?>">
@@ -62,41 +62,10 @@ $plan_day_per_week = $plan['days_per_week'] ?? '';
         <input type="hidden" name="bmi_value" value="<?= htmlspecialchars($BMI_value) ?>">
         <input type="hidden" name="day_per_week" value="<?= htmlspecialchars($plan_day_per_week) ?>">
         <div class="modal-body">
-            <div id="beginnerBody">
+            <div id="modalBody_beginner">
                 <p>Loading...</p>
-                <!-- hidden meta -->
-                
-                <!-- INFO STRIP -->
-                <div class="info-strip mb-4">
-
-                  <div>
-                    <span>Days / Week</span>
-                    <strong><?= $plan_day_per_week; ?></strong>
-                  </div>
-
-                  <div>
-                    <span>Intensity</span>
-                    <strong><?= ucfirst($plan_intensity); ?></strong>
-                  </div>
-
-                  <div>
-                    <span>Focus</span>
-                    <strong><?= ucfirst($plan_focus); ?></strong>
-                  </div>
-
-                </div>
-
-                <!-- WORKOUT LIST -->
-                <div class="exercise-list">
-                  <!-- TODO: render exercises here -->
-                </div>
-
                 <button type="submit" class="btn modern-btn w-100 mt-4">
                   Save Plan
-                </button>
-
-                <button onclick="openBeginnerModal()" class="btn btn-primary mt-3">
-                    View Beginner Plan
                 </button>
             </div>
         </div>

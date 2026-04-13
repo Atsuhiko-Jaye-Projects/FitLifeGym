@@ -132,7 +132,7 @@ include "gen_modal/add_bmi_modal.php";
 
         <div class="card-body">
 
-            <?php if ($BMI_record->status === "No Plan"): ?>
+            <?php if ($_SESSION['existing_plan'] == 0): ?>
 
                 <!-- CTA CARD -->
                 <div class="text-center py-4">

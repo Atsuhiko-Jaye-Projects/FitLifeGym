@@ -115,6 +115,14 @@ if ($_POST) {
                 confirmButtonText: "OK"
             });
         </script>';
+        
+        $user->id = $_SESSION['user_id'];
+        $user->updatePlanStatus();
+
+        $_SESSION['existing_plan'] = 1;
+
+        header("LOCATION:{$home_url}user/client/index.php?action=created");
+        exit;
     } else {
         echo '<script>
             Swal.fire({
@@ -167,7 +175,7 @@ if ($_SESSION['existing_plan'] == 0) {
                     <button class="btn btn-sm btn-outline-light"
                             data-bs-toggle="modal"
                             data-bs-target="#beginnerModal"
-                            onclick="loadWorkoutPlan('Beginner')">
+                            onclick="loadWorkoutPlan('beginner', 'modalBody_beginner', 'hiddenInputs_beginner')">
                         View Plan
                     </button>
                 </div>
@@ -191,7 +199,7 @@ if ($_SESSION['existing_plan'] == 0) {
                     <button class="btn btn-sm btn-outline-light"
                             data-bs-toggle="modal"
                             data-bs-target="#intermidiateModal"
-                            onclick="loadWorkoutPlan('Intermidiate')">
+                            onclick="loadWorkoutPlan('intermediate', 'modalBody_intermediate', 'hiddenInputs_intermediate')">
                             
                         View Plan
                     </button>
@@ -216,7 +224,7 @@ if ($_SESSION['existing_plan'] == 0) {
                     <button class="btn btn-sm btn-outline-light"
                             data-bs-toggle="modal"
                             data-bs-target="#advanceModal"
-                            onclick="loadWorkoutPlan('Advance')">
+                            onclick="loadWorkoutPlan('advanced', 'modalBody_advanced', 'hiddenInputs_advanced')">
                         View Plan
                     </button>
                 </div>
@@ -240,7 +248,7 @@ if ($_SESSION['existing_plan'] == 0) {
                     <button class="btn btn-sm btn-outline-light"
                             data-bs-toggle="modal"
                             data-bs-target="#customModal"
-                            onclick="loadWorkoutPlan('Custom')">
+                            onclick="loadWorkoutPlan('Custom', 'modalBody')">
                         Create Plan
                     </button>
                 </div>
@@ -271,16 +279,17 @@ const BMICategory = "<?= $bmiCategory ?>";
 
 const PlanIntensity = "<?= $plan_intensity ?>";
 const PlanFocus = "<?= $plan_focus ?>";
-const PlanSessionDuration = "<?= $plan_duration ?>";  // ✅ FIXED
+const PlanSessionDuration = "<?= $plan_duration ?>";
 const PlanDayPerWeek = "<?= $plan_day_per_week ?>";
 
-const PlanWeeks = 4; 
+const PlanWeeks = 4;
 
 
-function loadWorkoutPlan(level) {
+function loadWorkoutPlan(level, modalBody, containerId) {
 
-    // show loading state
-    document.getElementById("beginnerBody").innerHTML =
+    console.log("FUNCTION CALLED", level, modalBody);
+
+    document.getElementById(modalBody).innerHTML =
         "<p>⏳ Generating your workout plan...</p>";
 
     fetch("../../../../api/get_workout_plan.php", {
@@ -304,129 +313,121 @@ function loadWorkoutPlan(level) {
     .then(res => res.json())
     .then(data => {
 
-    console.log("API RESPONSE:", data);
+        console.log("API RESPONSE:", data);
 
-    const plan = data.result; // ✅ FIXED
+        const plan = data.result; // keep your original logic
 
-    let exercisesHTML = "";
+        let exercisesHTML = "";
 
-    plan.exercises.forEach(day => {
+        plan.exercises.forEach(day => {
 
-        exercisesHTML += `
-            <div class="mb-3">
-                <h5>📅 ${day.day}</h5>
-        `;
-
-        day.exercises.forEach(ex => {
             exercisesHTML += `
-                <div class="p-2 mb-2 border rounded">
-                    <strong>${ex.name}</strong><br>
-                    <small>
-                        ⏱ ${ex.duration} |
-                        🔁 ${ex.repetitions} |
-                        📦 ${ex.sets} sets
-                    </small>
-                </div>
+                <div class="mb-3">
+                    <h5>📅 ${day.day}</h5>
             `;
-        });
 
-        exercisesHTML += `</div>`;
-    });
-
-
-    let container = document.getElementById("hiddenInputsContainer");
-    container.innerHTML = "";
-
-    plan.exercises.forEach((day, i) => {
-
-        day.exercises.forEach((ex, j) => {
-
-            container.innerHTML += `
-                <input type="hidden" name="exercises[${i}][day]" value="${day.day}">
-                <input type="hidden" name="exercises[${i}][items][${j}][name]" value="${ex.name}">
-                <input type="hidden" name="exercises[${i}][items][${j}][duration]" value="${ex.duration}">
-                <input type="hidden" name="exercises[${i}][items][${j}][repetitions]" value="${ex.repetitions}">
-                <input type="hidden" name="exercises[${i}][items][${j}][sets]" value="${ex.sets}">
-            `;
-        });
-
-    });
-
-    document.getElementById("session_duration").value = plan.total_weeks;
-
-
-
-
-    document.getElementById("beginnerBody").innerHTML = `
-    <div class="container-fluid text-white">
-
-        <div class="row">
-
-
-            <div class="col-md-4 border-end">
-
-                <h4>💪 ${plan.goal}</h4>
-                <hr>
-
-                <p><strong>Level:</strong><br>${plan.fitness_level}</p>
-
-                <p><strong>Days per week:</strong><br>${plan.schedule.days_per_week}</p>
-
-                <p><strong>Session duration:</strong><br>${plan.schedule.session_duration} mins</p>
-
-                <p><strong>Total duration:</strong><br>${plan.total_weeks} weeks</p>
-
-                <hr>
-
-                <p><strong>Focus:</strong><br>${plan.goal || 'General fitness'}</p>
-
-                <button onclick="saveWorkoutPlan(window.currentPlan)"
-                        class="btn btn-success w-100 mt-3">
-                    💾 Save Plan
-                </button>
-
-            </div>
-
-
-            <div class="col-md-8" style="max-height: 500px; overflow-y: auto;">
-
-                <h5>🏋️ Workout Schedule</h5>
-                <hr>
-
-                ${plan.exercises.map(day => `
-                    <div class="mb-3">
-
-                        <h6 class="text-info">📅 ${day.day}</h6>
-
-                        ${day.exercises.map(ex => `
-                            <div class="p-2 mb-2 bg-dark rounded">
-
-                                <strong>${ex.name}</strong><br>
-
-                                <small>
-                                    ⏱ ${ex.duration} |
-                                    🔁 ${ex.repetitions} |
-                                    📦 ${ex.sets}
-                                </small>
-
-                            </div>
-                        `).join("")}
-
+            day.exercises.forEach(ex => {
+                exercisesHTML += `
+                    <div class="p-2 mb-2 border rounded">
+                        <strong>${ex.name}</strong><br>
+                        <small>
+                            ⏱ ${ex.duration ?? 'Not Set'} |
+                            🔁 ${ex.repetitions ?? 'Not Set'} |
+                            📦 ${ex.sets ?? 'Not Set'} sets
+                        </small>
                     </div>
-                `).join("")}
+                `;
+            });
+
+            exercisesHTML += `</div>`;
+        });
+
+        let container = document.getElementById(containerId);
+        container.innerHTML = "";
+
+        plan.exercises.forEach((day, i) => {
+            day.exercises.forEach((ex, j) => {
+
+                container.innerHTML += `
+                    <input type="hidden" name="exercises[${i}][day]" value="${day.day}">
+                    <input type="hidden" name="exercises[${i}][items][${j}][name]" value="${ex.name}">
+                    <input type="hidden" name="exercises[${i}][items][${j}][duration]" value="${ex.duration}">
+                    <input type="hidden" name="exercises[${i}][items][${j}][repetitions]" value="${ex.repetitions}">
+                    <input type="hidden" name="exercises[${i}][items][${j}][sets]" value="${ex.sets}">
+                `;
+            });
+        });
+
+        document.getElementById("session_duration").value = plan.total_weeks;
+
+        document.getElementById(modalBody).innerHTML = `
+        <div class="container-fluid text-white">
+
+            <div class="row">
+
+                <div class="col-md-4 border-end">
+
+                    <h4>💪 ${plan.goal}</h4>
+                    <hr>
+
+                    <p><strong>Level:</strong><br>${plan.fitness_level}</p>
+
+                    <p><strong>Days per week:</strong><br>${plan.schedule.days_per_week}</p>
+
+                    <p><strong>Session duration:</strong><br>${plan.schedule.session_duration} mins</p>
+
+                    <p><strong>Total duration:</strong><br>${plan.total_weeks} weeks</p>
+
+                    <hr>
+
+                    <p><strong>Focus:</strong><br>${plan.goal || 'General fitness'}</p>
+
+                    <button onclick="saveWorkoutPlan(window.currentPlan)"
+                            class="btn btn-success w-100 mt-3">
+                        💾 Save Plan
+                    </button>
+
+                </div>
+
+                <div class="col-md-8" style="max-height: 500px; overflow-y: auto;">
+
+                    <h5>🏋️ Workout Schedule</h5>
+                    <hr>
+
+                    ${plan.exercises.map(day => `
+                        <div class="mb-3">
+
+                            <h6 class="text-info">📅 ${day.day}</h6>
+
+                            ${day.exercises.map(ex => `
+                                <div class="p-2 mb-2 bg-dark rounded">
+
+                                    <strong>${ex.name}</strong><br>
+
+                                    <small>
+                                        ⏱ ${ex.duration ?? 'Not Set'} |
+                                        🔁 ${ex.repetitions ?? 'Not Set'} |
+                                        📦 ${ex.sets ? ex.sets + ' sets' : 'Not Set'}
+                                    </small>
+
+                                </div>
+                            `).join("")}
+
+                        </div>
+                    `).join("")}
+
+                </div>
 
             </div>
 
         </div>
-
-    </div>
-    `;
+        `;
     })
-
     .catch(err => {
         console.log(err);
 
-        document.getElementById("beginnerBody").innerHTML =
+        /* FIX #4 */
+        document.getElementById(modalBody).innerHTML =
             "<p class='text-danger'>❌ Failed to load workout plan</p>";
     });
 }
