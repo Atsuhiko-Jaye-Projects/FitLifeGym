@@ -59,6 +59,32 @@ class ExerciseActivity{
 
         return false;
     }
+
+    function readExercise(){
+
+    $query = "SELECT 
+                e.*, 
+                t.status AS log_status,
+                t.sets AS log_sets,
+                t.duration AS log_duration,
+                t.id AS training_log_id,
+                t.progress AS progress,
+                t.created_at AS exercise_started
+            FROM " . $this->table_name . " e
+            LEFT JOIN training_logs t 
+                ON e.id = t.exercise_id 
+                AND t.day = DAYNAME(CURDATE())
+                AND DATE(t.created_at) = CURDATE()
+            WHERE e.workout_plan_id = :workout_plan_id
+            AND e.day = DAYNAME(CURDATE())";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":workout_plan_id", $this->workout_plan_id);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
 }
 
 ?>

@@ -200,8 +200,7 @@ if ($_SESSION['existing_plan'] == 0) {
                             data-bs-toggle="modal"
                             data-bs-target="#intermidiateModal"
                             onclick="loadWorkoutPlan('intermediate', 'modalBody_intermediate', 'hiddenInputs_intermediate')">
-                            
-                        View Plan
+                            View Plan
                     </button>
                 </div>
 
@@ -248,7 +247,7 @@ if ($_SESSION['existing_plan'] == 0) {
                     <button class="btn btn-sm btn-outline-light"
                             data-bs-toggle="modal"
                             data-bs-target="#customModal"
-                            onclick="loadWorkoutPlan('Custom', 'modalBody')">
+                            >
                         Create Plan
                     </button>
                 </div>
@@ -427,6 +426,132 @@ function loadWorkoutPlan(level, modalBody, containerId) {
         console.log(err);
 
         /* FIX #4 */
+        document.getElementById(modalBody).innerHTML =
+            "<p class='text-danger'>❌ Failed to load workout plan</p>";
+    });
+}
+
+function loadCustomPlan(level, modalBody, containerId) {
+
+    console.log("FUNCTION CALLED", level, modalBody);
+
+    document.getElementById(modalBody).innerHTML =
+        "<p>⏳ Generating your workout plan...</p>";
+
+    // ✅ GET REAL VALUES FROM FORM
+    const form = document.querySelector("#customModal form");
+
+    const formData = new FormData(form);
+
+    const payload = {
+        goal: formData.get("plan_name"),
+        fitness_level: formData.get("level"),
+        schedule: {
+            days_per_week: parseInt(formData.get("days")),
+            session_duration: parseInt(formData.get("session_duration"))
+        },
+        plan_duration_weeks: parseInt(formData.get("plan_duration_weeks")),
+        health_conditions: ["None"],
+        lang: "en"
+    };
+
+    fetch("../../../../api/get_workout_plan.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        console.log("API RESPONSE:", data);
+
+        const plan = data.result;
+        window.currentPlan = plan;
+
+        let container = document.getElementById(containerId);
+        container.innerHTML = "";
+
+        plan.exercises.forEach((day, i) => {
+            day.exercises.forEach((ex, j) => {
+
+                container.innerHTML += `
+                    <input type="hidden" name="exercises[${i}][day]" value="${day.day}">
+                    <input type="hidden" name="exercises[${i}][items][${j}][name]" value="${ex.name}">
+                    <input type="hidden" name="exercises[${i}][items][${j}][duration]" value="${ex.duration}">
+                    <input type="hidden" name="exercises[${i}][items][${j}][repetitions]" value="${ex.repetitions}">
+                    <input type="hidden" name="exercises[${i}][items][${j}][sets]" value="${ex.sets}">
+                    <input type="text" name="exercises[${i}][items][${j}][total_weeks]" value="${ex.total_weeks}">
+                `;
+            });
+        });
+
+        document.getElementById(modalBody).innerHTML = `
+        <div class="container-fluid text-white">
+
+            <div class="row">
+
+                <div class="col-md-4 border-end">
+
+                    <h4>💪 ${plan.goal}</h4>
+                    <hr>
+
+                    <p><strong>Level:</strong><br>${plan.fitness_level}</p>
+
+                    <p><strong>Days per week:</strong><br>${plan.schedule.days_per_week}</p>
+
+                    <p><strong>Session duration:</strong><br>${plan.schedule.session_duration} mins</p>
+
+                    <p><strong>Total duration:</strong><br>${plan.total_weeks} weeks</p>
+
+                    <hr>
+
+                    <p><strong>Focus:</strong><br>${plan.goal}</p>
+
+                    <button onclick="saveWorkoutPlan(window.currentPlan)"
+                            class="btn btn-success w-100 mt-3">
+                        💾 Save Plan
+                    </button>
+
+                </div>
+
+                <div class="col-md-8" style="max-height: 500px; overflow-y: auto;">
+
+                    <h5>🏋️ Workout Schedule</h5>
+                    <hr>
+
+                    ${plan.exercises.map(day => `
+                        <div class="mb-3">
+
+                            <h6 class="text-info">📅 ${day.day}</h6>
+
+                            ${day.exercises.map(ex => `
+                                <div class="p-2 mb-2 bg-dark rounded">
+
+                                    <strong>${ex.name}</strong><br>
+
+                                    <small>
+                                        ⏱ ${ex.duration ?? 'Not Set'} |
+                                        🔁 ${ex.repetitions ?? 'Not Set'} |
+                                        📦 ${ex.sets ?? 'Not Set'} sets
+                                    </small>
+
+                                </div>
+                            `).join("")}
+
+                        </div>
+                    `).join("")}
+
+                </div>
+
+            </div>
+
+        </div>
+        `;
+    })
+    .catch(err => {
+        console.log(err);
         document.getElementById(modalBody).innerHTML =
             "<p class='text-danger'>❌ Failed to load workout plan</p>";
     });

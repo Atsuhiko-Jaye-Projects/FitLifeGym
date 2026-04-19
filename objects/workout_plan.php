@@ -15,6 +15,7 @@ class WorkOutPlan{
     public $current_bmi;
     public $created_at;
     public $modified_at;
+    public $total_weeks;
 
 
     public function __construct($db){
@@ -227,7 +228,8 @@ class WorkOutPlan{
 
         $query = "SELECT * FROM 
                     " . $this->table_name ." 
-                    WHERE client_id = :client_id";
+                    WHERE client_id = :client_id
+                    LIMIT 0,1";
         
         $stmt = $this->conn->prepare($query);
 
@@ -240,7 +242,11 @@ class WorkOutPlan{
         $this->workout_plan = $row['workout_plan'];
         $this->workout_plan_id = $row['workout_plan_id'];
         $this->workout_plan = $row['workout_plan'];
-
+        $this->level = $row['level'];
+        $this->workout_plan = $row['workout_plan'];
+        $this->status = $row['status'];
+        $this->duration = $row['duration'];
+        $this->day_per_week = $row['day_per_week'];
     }
 
 

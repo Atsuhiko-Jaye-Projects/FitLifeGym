@@ -12,7 +12,7 @@ else if(isset($require_login) && $require_login==true){
 	}
 }
 // if it was the 'login' or 'register' or 'sign up' page but the customer was already logged in
-else if(isset($page_title) && ($page_title=="Signin" || $page_title=="signup")){
+else if(isset($page_title) && ($page_title=="Signin" || $page_title=="Signup")){
 	// if user not yet logged in, redirect to login page
 	if(isset($_SESSION['access_level']) && $_SESSION['access_level']=="Client"){
 		header("Location: {$home_url}user/client/index.php?action=already_logged_in");

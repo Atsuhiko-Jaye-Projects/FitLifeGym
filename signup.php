@@ -8,7 +8,7 @@ $db = $database->getConnection();
 
 $user = new User($db);
 
-$page_title = "signup";
+$page_title = "Signup";
 include_once "layout/header.php";
 
 $require_login = false;

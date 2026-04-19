@@ -24,7 +24,7 @@
         // show the other side options
     }
 ?>
-        <a href="../pages/settings.php" class="nav-link">
+        <a href="<?php echo $base_url?>user/client/profile/profile.php" class="nav-link">
             <i class="bi bi-person-circle me-2"></i> Profile
         </a>
         <a href="<?php echo $base_url; ?>logout.php" class="nav-link">

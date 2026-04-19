@@ -19,7 +19,7 @@
 
     <!-- Dynamic CSS -->
     <?php
-        if ($page_title == 'signin' || $page_title=="signup") {
+        if ($page_title == 'signin' || $page_title=="Signup") {
             echo "<link href='assets/css/signin.css' rel='stylesheet'>";
         } elseif ($page_title == 'index') {
             echo "<link href='assets/css/index.css' rel='stylesheet'>";
