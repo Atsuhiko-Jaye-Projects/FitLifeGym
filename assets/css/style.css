@@ -236,4 +236,10 @@ label {
     background: #0b5ed7;
 }
 
+.list-group-item {
+    color: #fff !important;
+    background-color: #212529 !important;
+}
+
+
 

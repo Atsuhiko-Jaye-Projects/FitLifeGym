@@ -1,7 +1,51 @@
+<!-- ================= FOOTER ================= -->
+<footer class="bg-dark text-white mt-5 pt-4 pb-3">
+    <div class="container">
+        <div class="row">
+
+            <!-- Brand / About -->
+            <div class="col-md-4 mb-3">
+                <h5 class="fw-bold">FitLife Gym</h5>
+                <p class="small text-muted">
+                    Your personal fitness companion. Track workouts, monitor progress, and stay consistent every day.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-4 mb-3">
+                <h6 class="fw-semibold">Quick Links</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="#" class="text-decoration-none text-light">Dashboard</a></li>
+                    <li><a href="#" class="text-decoration-none text-light">Workout Plans</a></li>
+                    <li><a href="#" class="text-decoration-none text-light">Progress Tracker</a></li>
+                    <li><a href="#" class="text-decoration-none text-light">Profile</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact / Info -->
+            <div class="col-md-4 mb-3">
+                <h6 class="fw-semibold">Contact</h6>
+                <p class="small mb-1">📍Marinduque, Mogpog</p>
+                <p class="small mb-1">📧 fitlifegym@email.com</p>
+                <p class="small mb-0">📞 +63 912 345 6789</p>
+            </div>
+
+        </div>
+
+        <hr class="border-secondary">
+
+        <!-- Bottom -->
+        <div class="text-center small text-muted">
+            © <?php echo date("Y"); ?> FitLife Gym. All rights reserved.
+        </div>
+    </div>
+</footer>
+<!-- ================= END FOOTER ================= -->
 </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
@@ -45,6 +89,7 @@ function updateWorkout(id) {
 
     const exerciseId = btn.dataset.exerciseId;
     const exerciseStatus = btn.dataset.status;
+    const personalBest = document.getElementById("pb" + id).value;
 
     if (btn.innerText === "Start") {
         statusText = "in_progress";
@@ -77,7 +122,8 @@ function updateWorkout(id) {
         body: JSON.stringify({
             exercise_id: exerciseId,
             status: statusText,
-            progress: progressValue
+            progress: progressValue,
+            personal_best: personalBest
         })
     })
     .then(async (res) => {

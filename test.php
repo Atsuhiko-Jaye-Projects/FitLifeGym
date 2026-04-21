@@ -1,97 +1,82 @@
+<?php
+$weeks = [
+    ["week" => "Week 1", "progress" => 90],
+    ["week" => "Week 2", "progress" => 60],
+    ["week" => "Week 3", "progress" => 40],
+    ["week" => "Week 4", "progress" => 20],
+];
+
+$currentProgress = $weeks[count($weeks)-1]['progress'];
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Workout Hover Video Demo</title>
+<title>FitLife Progress UI</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-body {
-    font-family: Arial;
-    background: #111;
-    color: #fff;
-    padding: 20px;
+/* 🔥 Circular Progress */
+.circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: conic-gradient(#198754 <?php echo $currentProgress; ?>%, #e9ecef 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin: auto;
 }
 
-.exercise-card {
-    position: relative;
+/* 🔥 Week cards */
+.week-card {
+    border-radius: 15px;
     padding: 15px;
-    margin-bottom: 15px;
-    background: #222;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 300px;
+    color: white;
+    text-align: center;
+    font-weight: 600;
 }
 
-.exercise-card:hover {
-    background: #2a2a2a;
-}
-
-.video-preview {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 320px;
-    height: 180px;
-    background: #000;
-    z-index: 10;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-}
-
-.exercise-card:hover .video-preview {
-    display: block;
-}
+.good { background: #198754; }
+.mid { background: #ffc107; color: black; }
+.bad { background: #dc3545; }
 </style>
+
 </head>
+<body class="bg-light">
 
-<body>
+<div class="container mt-5">
 
-<h2>💪 Workout Plan</h2>
+    <div class="card p-4 shadow rounded-4 text-center">
+        <h3 class="fw-bold mb-4">🔥 Your Fitness Progress</h3>
 
-<div class="exercise-card" data-video="dQw4w9WgXcQ">
-    <strong>Push-ups</strong>
-    <div class="video-preview"></div>
+        <!-- 🔵 CIRCLE -->
+        <div class="circle mb-4">
+            <?php echo $currentProgress; ?>%
+        </div>
+
+        <!-- 📅 WEEKLY CARDS -->
+        <div class="row g-3">
+            <?php foreach ($weeks as $w): 
+                $class = "bad";
+                if ($w['progress'] >= 70) $class = "good";
+                elseif ($w['progress'] >= 40) $class = "mid";
+            ?>
+            <div class="col-md-3">
+                <div class="week-card <?php echo $class; ?>">
+                    <div><?php echo $w['week']; ?></div>
+                    <div style="font-size: 22px;"><?php echo $w['progress']; ?>%</div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+    </div>
+
 </div>
-
-<div class="exercise-card" data-video="3sEeVJEXTfY">
-    <strong>Squats</strong>
-    <div class="video-preview"></div>
-</div>
-
-<div class="exercise-card" data-video="pSHjTRCQxIw">
-    <strong>Plank</strong>
-    <div class="video-preview"></div>
-</div>
-
-<script>
-// Attach hover video only once
-document.querySelectorAll(".exercise-card").forEach(card => {
-    const videoId = card.dataset.video;
-    const preview = card.querySelector(".video-preview");
-
-    card.addEventListener("mouseenter", () => {
-
-        if (!preview.innerHTML) {
-            preview.innerHTML = `
-                <iframe width="320" height="180"
-                    src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1"
-                    frameborder="0"
-                    allow="autoplay; encrypted-media"
-                    allowfullscreen>
-                </iframe>
-            `;
-        }
-    });
-
-    // optional cleanup on leave (prevents lag over time)
-    card.addEventListener("mouseleave", () => {
-        // comment this if you want it to keep playing
-        preview.innerHTML = "";
-    });
-});
-</script>
 
 </body>
 </html>

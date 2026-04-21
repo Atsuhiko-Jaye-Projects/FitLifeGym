@@ -482,7 +482,7 @@ function loadCustomPlan(level, modalBody, containerId) {
                     <input type="hidden" name="exercises[${i}][items][${j}][duration]" value="${ex.duration}">
                     <input type="hidden" name="exercises[${i}][items][${j}][repetitions]" value="${ex.repetitions}">
                     <input type="hidden" name="exercises[${i}][items][${j}][sets]" value="${ex.sets}">
-                    <input type="text" name="exercises[${i}][items][${j}][total_weeks]" value="${ex.total_weeks}">
+                    <input type="hidden" name="exercises[${i}][items][${j}][total_weeks]" value="${ex.total_weeks}">
                 `;
             });
         });

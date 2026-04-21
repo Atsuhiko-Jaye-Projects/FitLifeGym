@@ -53,7 +53,7 @@ class BMIRecord{
     function checkBmiRecord() {
         $query = "SELECT * FROM " . $this->table_name . "
                 WHERE client_id = :client_id
-                LIMIT 1";
+                LIMIT 0,1";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":client_id", $this->client_id);
@@ -67,7 +67,6 @@ class BMIRecord{
             $this->bmi_classification = $row['bmi_classification'] ?? null;
             return true;
         }
-
     }
 
 

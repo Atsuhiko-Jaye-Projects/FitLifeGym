@@ -23,7 +23,10 @@ if (!$data) {
 if (
     !isset($data['exercise_id']) ||
     !isset($data['status']) ||
-    !isset($data['progress'])
+    !isset($data['progress']) ||
+    !isset($data['personal_best'])
+    
+    
 ) {
     echo json_encode([
         "success" => false,
@@ -36,6 +39,7 @@ $exercise_log->exercise_id = $data['exercise_id'];
 $exercise_log->status = $data['status'];
 $exercise_log->progress = $data['progress'];
 $exercise_log->modified_at = date("Y-m-d H:i:s");
+$exercise_log->personal_best = $data['personal_best'];
 
 if ($exercise_log->updateExerciseLog()) {
     echo json_encode([

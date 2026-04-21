@@ -15,11 +15,11 @@
     if ($_SESSION['first_time_logged_in'] != 1) {
         echo "<a href='{$base_url}user/client/dashboard/dashboard.php' class='nav-link'>
             <i class='bi bi-speedometer2 me-2'></i> Dashboard
-        </a>
-
-        <a href='../pages/progress_tracker.php' class='nav-link'>
-            <i class='bi bi-graph-up-arrow me-2'></i> Progress
         </a>";
+
+        // <a href='../pages/progress_tracker.php' class='nav-link'>
+        //     <i class='bi bi-graph-up-arrow me-2'></i> Progress
+        // </a>";
     }else{
         // show the other side options
     }

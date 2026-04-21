@@ -228,7 +228,7 @@ class WorkOutPlan{
 
         $query = "SELECT * FROM 
                     " . $this->table_name ." 
-                    WHERE client_id = :client_id
+                    WHERE client_id = :client_id AND status = 'Active'
                     LIMIT 0,1";
         
         $stmt = $this->conn->prepare($query);

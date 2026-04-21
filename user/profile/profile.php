@@ -14,83 +14,76 @@ $user = new User($db);
 $workout_plan = new WorkoutPlan($db);
 $exercise_activity = new ExerciseActivity($db);
 
-
-if (isset($_SESSION['user_id'])) {
-
-    $BMI_record->client_id = $_SESSION['user_id'];
-    $BMI_record->checkBmiRecord();
-
-    if ($BMI_record->status == "No Plan") {
-        // show the current bmi record
-        $show_plan_button = true;
-        $category = $BMI_record->bmi_classification;
-        $BMI_value = $BMI_record->bmi;
-    }else{
-        $show_plan_button = false;
-        $category = $BMI_record->bmi_classification;
-        $BMI_value = $BMI_record->bmi;
-    }
-}
-
-
 $require_login = true;
 include_once "../../../login_checker.php";
 
-$page_title = "index";
+// USER
+$fullname = $_SESSION['firstname'] . " " . ($_SESSION['lastname'] ?? "");
+$email = $_SESSION['email'] ?? "user@email.com";
+
+// BMI
+$BMI_record->client_id = $_SESSION['user_id'];
+$BMI_record->checkBmiRecord();
+
+$category = $BMI_record->bmi_classification ?? "No data";
+$BMI_value = $BMI_record->bmi ?? "—";
+$show_plan_button = ($BMI_record->status == "No Plan");
+
+// PLAN (temporary)
+$plan_name = "Beginner Fat Loss";
+$plan_goal = "Lose weight and improve endurance";
+
+// ACTIVITY (temporary)
+$activities = [
+    ["name" => "Chest Workout", "date" => "Yesterday"],
+    ["name" => "Cardio Session", "date" => "2 days ago"],
+    ["name" => "Leg Day", "date" => "4 days ago"]
+];
+
+$page_title = "Dashboard";
 include '../layout/header.php';
 ?>
 
 <div class="col-md-9 col-lg-10 p-4">
 
-    <!-- HERO (keep as is or light/dark, your choice) -->
-    <div class="bg-dark text-white p-4 rounded mb-4 d-flex align-items-center justify-content-between">
-        
-        <!-- Left side: Profile + Welcome -->
-        <div class="d-flex align-items-center">
-            
-            <!-- Profile Picture -->
-            <div class="me-3">
-                <img src="../../../assets/images/logo.png" 
-                    alt="Profile Picture" 
-                    class="rounded-circle"
-                    style="width: 80px; height: 80px; object-fit: cover;">
-            </div>
+    <!-- HERO (ONLY CHANGE: added profile picture) -->
+    <div class="bg-dark text-white p-4 rounded mb-4 d-flex align-items-center">
 
-            <!-- Welcome Text -->
-            <div>
-                <h2 class="mb-1">Welcome Back <?php echo $_SESSION['firstname']; ?>!</h2>
-                <p class="mb-0">Your personal fitness hub — track, train & transform.</p>
-            </div>
-            
+        <div class="me-3">
+            <img src="../../../assets/images/default-avatar.png"
+                 alt="Profile"
+                 class="rounded-circle"
+                 width="60"
+                 height="60"
+                 style="object-fit: cover;">
         </div>
 
-        <!-- Right side: Edit Button -->
         <div>
-            <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                Edit Profile
-            </button>
+            <h2>Welcome Back <?php echo $_SESSION['firstname']; ?>!</h2>
+            <p class="mb-0">Your personal fitness hub — track, train & transform.</p>
         </div>
 
     </div>
 
     <div class="row g-4">
 
-        <!-- LEFT: BMI SUMMARY -->
+        <!-- LEFT: BMI -->
         <div class="col-md-6">
             <div class="card bg-dark text-white shadow h-100 border-0">
                 <div class="card-body">
+
                     <h5 class="card-title">Your BMI</h5>
 
                     <h1 class="display-4 fw-bold">
-                        <?php echo $BMI_value ?? '—'; ?>
+                        <?php echo $BMI_value; ?>
                     </h1>
 
                     <p class="text-light">
-                        Category: <strong><?php echo $category ?? 'No data'; ?></strong>
+                        Category: <strong><?php echo $category; ?></strong>
                     </p>
 
                     <?php if ($show_plan_button): ?>
-                        <a href="create_plan.php" class="btn btn-primary mt-2">
+                        <a href="create_plan.php" class="btn btn-primary btn-sm mt-2">
                             Get Workout Plan
                         </a>
                     <?php else: ?>
@@ -98,21 +91,23 @@ include '../layout/header.php';
                             Workout Plan Active
                         </span>
                     <?php endif; ?>
+
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT -->
+        <!-- RIGHT SIDE -->
         <div class="col-md-6">
 
-            <!-- WORKOUT PLAN -->
+            <!-- PLAN -->
             <div class="card bg-dark text-white shadow mb-4 border-0">
                 <div class="card-body">
+
                     <h5 class="card-title">Workout Plan</h5>
 
                     <?php if (!$show_plan_button): ?>
-                        <p class="mb-1"><strong>Plan:</strong> Active Plan</p>
-                        <p class="mb-2"><strong>Status:</strong> In Progress</p>
+                        <p class="mb-1"><strong><?php echo $plan_name; ?></strong></p>
+                        <p class="mb-2"><?php echo $plan_goal; ?></p>
 
                         <a href="view_plan.php" class="btn btn-outline-light btn-sm">
                             View Plan
@@ -123,23 +118,29 @@ include '../layout/header.php';
                             Create Plan
                         </a>
                     <?php endif; ?>
+
                 </div>
             </div>
 
             <!-- ACTIVITY -->
             <div class="card bg-dark text-white shadow border-0">
                 <div class="card-body">
+
                     <h5 class="card-title">Recent Activity</h5>
 
                     <ul class="list-unstyled mb-2">
-                        <li>🏋️ Chest Workout - Yesterday</li>
-                        <li>🏃 Cardio - 2 days ago</li>
-                        <li>💪 Leg Day - 4 days ago</li>
+                        <?php foreach ($activities as $act): ?>
+                            <li>
+                                💪 <?php echo $act['name']; ?> - 
+                                <small><?php echo $act['date']; ?></small>
+                            </li>
+                        <?php endforeach; ?>
                     </ul>
 
                     <a href="activity.php" class="btn btn-outline-light btn-sm">
                         View All Activity
                     </a>
+
                 </div>
             </div>
 
@@ -147,12 +148,3 @@ include '../layout/header.php';
 
     </div>
 </div>
-
-
-<?php 
-include_once "../gen_modal/edit_profile_modal.php";
-include_once "../layout/footer.php"; 
-?>
-
-
-

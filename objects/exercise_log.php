@@ -15,6 +15,7 @@ class ExerciseLog{
     public $exercise_id;
     public $day;
     public $progress;
+    public $personal_best;
     
 
     public function __construct($db){
@@ -64,7 +65,8 @@ class ExerciseLog{
                 SET
                 status = :status,
                 modified_at = :modified_at,
-                progress = :progress
+                progress = :progress,
+                personal_best = :personal_best
                 WHERE
                 exercise_id = :exercise_id";
         
@@ -77,6 +79,7 @@ class ExerciseLog{
         $stmt->bindParam(":exercise_id", $this->exercise_id);
         $stmt->bindParam(":status", $this->status);
         $stmt->bindParam(":modified_at", $this->modified_at);
+        $stmt->bindParam(":personal_best", $this->personal_best);
         $stmt->bindParam(":progress", $this->progress);
 
         if ($stmt->execute()) {

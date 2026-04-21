@@ -85,6 +85,20 @@ class ExerciseActivity{
         return $stmt;
     }
 
+    function getExercise(){
+        $query = "SELECT * 
+                  FROM
+                    " . $this->table_name . "
+                  WHERE workout_plan_id = :workout_plan_id";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":workout_plan_id", $this->workout_plan_id);
+
+        $stmt->execute();
+
+        return $stmt;
+    }
+
 }
 
 ?>

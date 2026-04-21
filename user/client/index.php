@@ -18,17 +18,16 @@ $exercise_activity = new ExerciseActivity($db);
 if (isset($_SESSION['user_id'])) {
 
     $BMI_record->client_id = $_SESSION['user_id'];
-    $BMI_record->checkBmiRecord();
-
-    if ($BMI_record->status == "No Plan") {
+    
+    if ($BMI_record->checkBmiRecord()) {
         // show the current bmi record
         $show_plan_button = true;
         $category = $BMI_record->bmi_classification;
-        $BMI_value = $BMI_record->bmi;
+        // $BMI_value = $BMI_record->bmi;
     }else{
         $show_plan_button = false;
         $category = $BMI_record->bmi_classification;
-        $BMI_value = $BMI_record->bmi;
+        // $BMI_value = $BMI_record->bmi;
     }
 }
 
@@ -237,88 +236,117 @@ include "gen_modal/add_bmi_modal.php";
                     }
                     ?>
                     <?php
-                    echo "<div class='row g-3'>";
+                        echo "<div class='row g-3'>";
 
-                    $hasData = false;
+                        $hasData = false;
 
-                    foreach ($rows as $row) {
+                        foreach ($rows as $row) {
 
-                        $hasData = true;
+                            $hasData = true;
 
-                        echo "<div class='col-md-4'>";
+                            echo "<div class='col-md-4'>";
 
-                        echo "<div class='p-3 rounded shadow-sm bg-dark text-light border border-secondary h-100'>";
-                            echo "<button class='btn btn-primary float-end'>...</button>";
-                            echo "<h6 class='fw-bold'>{$row['name']}</h6>";
-                            echo "Sets <strong><small class=''>{$row['set_per_exercise']} Set</small></strong></br>";
-                            echo "Duration: <strong><small class=''>{$row['duration']} mins</small></strong><br>";
-                            echo "Training Log ID: {$row['training_log_id']} <br>";
-                            echo "Training Started: {$row['exercise_started']}";
-                            $progress = $row['progress'] ?? 0;
+                            echo "<div class='p-3 rounded shadow-sm bg-dark text-light border border-secondary h-100 position-relative overflow-hidden'>";
 
-                            echo "<div class='progress mt-2' style='height: 6px;'>
-                                    <div id='progressBar{$row['id']}' 
-                                        class='progress-bar bg-success' 
-                                        style='width: {$progress}%'>
-                                    </div>
-                                </div>";
 
-                            $status = $row['log_status'] ?? 'Start';
+                                echo "<div style='height:80px; background:linear-gradient(135deg,#0d6efd,#6610f2); border-radius:8px; margin-bottom:10px;'></div>";
 
-                            $badgeClass = match($status) {
+                                $youtubeQuery = urlencode($row['name']);
+                                echo "<a 
+                                        href='https://www.youtube.com/results?search_query={$youtubeQuery}'
+                                        target='_blank'
+                                        class='btn btn-primary btn-sm float-end'>
+                                        <i class='bi bi-youtube'></i>
+                                    </a>";
 
-                                'In progress' => 'bg-warning',
-                                'finished' => 'bg-success',
-                                'Start' => 'bg-secondary',
-                                default => 'bg-secondary'
-                            };
+                                echo "<h6 class='fw-bold mb-1'>{$row['name']}</h6>";
 
-                            echo "<span id='status{$row['id']}' class='badge {$badgeClass} mt-2'>" . ucfirst($status) . "</span><br>";
 
-                            $disabled = ($hasActiveWorkout && $row['log_status'] == null) ? "disabled" : "";
+                                echo "<div class='small text-light mb-2'>";
+                                    echo "<div>🏋️ Sets: <strong>{$row['set_per_exercise']}</strong></div>";
+                                    echo "<div>⏱ Duration: <strong>{$row['duration']} mins</strong></div>";
+                                    echo "<div>⏱ Cycle: <strong>{$row['cycle']} cycle</strong></div>";
+                                echo "</div>";
 
-                            $disable_updatebtn = ($row['log_status'] == "finished" || $row['log_status'] == "In progress") ? "disabled" : "";
-                            $startTime = strtotime($row['exercise_started']); // convert datetime to timestamp
-                            $durationSeconds = $row['duration'] * 60;   // duration in minutes → seconds
-                            $endTime = $startTime + $durationSeconds;
 
-                            // format back into readable datetime
-                            $endTimeFormatted = date('Y-m-d H:i:s', $endTime);
+                                $progress = $row['progress'] ?? 0;
 
-                            
-                            // BUTTON (UNCHANGED LOGIC)
-                            if ($row['log_status'] == null) {
-                                echo "<button 
-                                    id='btn{$row['id']}'
-                                    class='btn btn-sm {$badgeClass} mt-2 w-100 workout-btn'
-                                    data-id='{$row['id']}'
-                                    data-workplan-id='{$row['workout_plan_id']}'
-                                    data-name='{$row['name']}'
-                                    data-duration='{$row['duration']}'
-                                    data-sets='{$row['set_per_exercise']}'
-                                    data-day='{$row['day']}'
-                                    data-status='" . ($row['log_status'] == null ? "Started" : "existing") . "'
-                                    onclick='CreateWorkout(this)'
-                                    {$disabled}>{$status}</button>";
-                            } else {
-                            echo "<button 
-                                id='btn{$row['id']}' 
-                                class='btn btn-sm {$badgeClass} mt-2 w-100 timer-btn'
-                                data-start='" . date('c', strtotime($row['exercise_started'])) . "'
-                                data-exercise-id='{$row['id']}'
-                                data-duration='{$row['duration']}'
-                                data-status='{$row['log_status']}'
-                                onclick='updateWorkout({$row['id']})'
-                                $disable_updatebtn>
-                                ". ucfirst($row['log_status']) ."
-                            </button>";
-                            }
+                                echo "<div class='progress mt-2' style='height:6px; border-radius:10px;'>
+                                        <div id='progressBar{$row['id']}'
+                                            class='progress-bar bg-success'
+                                            style='width: {$progress}%'>
+                                        </div>
+                                    </div>";
+
+
+                                $status = $row['log_status'] ?? 'Start';
+
+                                $badgeClass = match($status) {
+                                    'In progress' => 'bg-warning',
+                                    'finished' => 'bg-success',
+                                    'Start' => 'bg-secondary',
+                                    default => 'bg-secondary'
+                                };
+
+                                echo "<span id='status{$row['id']}' class='badge {$badgeClass} mt-2'>" . ucfirst($status) . "</span><br>";
+
+                                $disabled = ($hasActiveWorkout && $row['log_status'] == null) ? "disabled" : "";
+                                $disable_updatebtn = ($row['log_status'] == "finished" || $row['log_status'] == "In progress") ? "disabled" : "";
+
+                                $startTime = strtotime($row['exercise_started']);
+                                $durationSeconds = $row['duration'] * 60;
+                                $endTime = $startTime + $durationSeconds;
+                                $endTimeFormatted = date('Y-m-d H:i:s', $endTime);
+
+                                if ($row['log_status'] == null) {
+
+                                    echo "<button 
+                                        id='btn{$row['id']}'
+                                        class='btn btn-sm {$badgeClass} mt-3 w-100 workout-btn'
+                                        data-id='{$row['id']}'
+                                        data-workplan-id='{$row['workout_plan_id']}'
+                                        data-name='{$row['name']}'
+                                        data-duration='{$row['duration']}'
+                                        data-sets='{$row['set_per_exercise']}'
+                                        data-day='{$row['day']}'
+                                        data-status='Started'
+                                        onclick='CreateWorkout(this)'
+                                        {$disabled}>
+                                        {$status}
+                                    </button>";
+
+                                } else {
+                                    if ($row['log_status'] == "In progress") {
+                                        echo "
+                                        <label class='form-label text-light'>Personal Best</label>
+                                        <input 
+                                            type='number' 
+                                            id='pb{$row['id']}'
+                                            class='form-control' 
+                                            placeholder='Record your best result' 
+                                            required>
+                                        <small class='text-muted'>Reps, minutes, or score depending on exercise</small>
+                                        ";
+                                    }
+
+                                    echo "<button 
+                                        id='btn{$row['id']}'
+                                        class='btn btn-sm {$badgeClass} mt-3 w-100 timer-btn'
+                                        data-start='" . date('c', strtotime($row['exercise_started'])) . "'
+                                        data-exercise-id='{$row['id']}'
+                                        data-duration='{$row['duration']}'
+                                        data-status='{$row['log_status']}'
+                                        onclick='updateWorkout({$row['id']})'
+                                        {$disable_updatebtn}>
+                                        " . ucfirst($row['log_status']) . "
+                                    </button>";
+                                }
+
+                            echo "</div>";
+                            echo "</div>";
+                        }
 
                         echo "</div>";
-                        echo "</div>";
-                    }
-
-                    echo "</div>";
 
                     // EMPTY STATE (UNCHANGED)
                     if (!$hasData) {
