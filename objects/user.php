@@ -15,6 +15,7 @@ class User{
     public $access_level;
     public $existing_plan;
     public $first_time_logged_in;
+    public $profile_image;
 
     public function __construct($db){
         $this->conn = $db;
@@ -157,6 +158,103 @@ class User{
         $stmt->bindParam(":id", $this->id);
         
         $stmt->execute();
+    }
+
+    function getProfileDetails(){
+
+        $query = "SELECT *
+                  FROM 
+                    " . $this->table_name ." 
+                    WHERE id = :id
+                    LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":id", $this->id);
+
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->firstname = $row['firstname'];
+        $this->lastname = $row['lastname'];
+        $this->email_address = $row['email_address'];
+        $this->password = $row['password'];
+        $this->contact_no = $row['contact_no'];
+        $this->profile_image = $row['profile_image'];
+    }
+
+    function UpdateUserProfile(){
+
+        $query = "UPDATE " . $this->table_name . "
+                SET
+                firstname = :firstname,
+                lastname = :lastname,
+                email_address = :email_address,
+                contact_no = :contact_no,
+                modified_at = :modified_at";
+
+        // Only include password if it's not empty
+        if (!empty($this->password)) {
+            $query .= ", password = :password";
+        }
+
+        $query .= " WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->modified_at = date("Y-m-d H:i:s");
+
+        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":firstname", $this->firstname);
+        $stmt->bindParam(":lastname", $this->lastname);
+        $stmt->bindParam(":email_address", $this->email_address);
+        $stmt->bindParam(":contact_no", $this->contact_no);
+        $stmt->bindParam(":modified_at", $this->modified_at);
+
+        // Hash password only if provided
+        if (!empty($this->password)) {
+            $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
+            $stmt->bindParam(":password", $hashedPassword);
+        }
+
+        return $stmt->execute();
+    }
+
+    function EmailAlreadyTakenById() {
+
+        $query = "SELECT id 
+                FROM " . $this->table_name . " 
+                WHERE email_address = :email_address 
+                AND id != :id
+                LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":email_address", $this->email_address);
+        $stmt->bindParam(":id", $this->id);
+
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
+    }
+
+    function ContactAlreadyTakenById() {
+
+        $query = "SELECT id 
+                FROM " . $this->table_name . " 
+                WHERE contact_no = :contact_no 
+                AND id != :id
+                LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":contact_no", $this->contact_no);
+        $stmt->bindParam(":id", $this->id);
+
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
     }
 }
 

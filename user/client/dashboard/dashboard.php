@@ -3,13 +3,15 @@ include_once "../../../config/core.php";
 include_once "../../../config/database.php";
 include_once "../../../objects/workout_plan.php";
 include_once "../../../objects/exercise_activity.php";
+include_once "../../../objects/exercise_log.php";
+
+
 $database = new Database();
 $db = $database->getConnection();
 
 $workout_plan = new WorkoutPlan($db);
-
 $exercice_activity = new ExerciseActivity($db);
-
+$exercise_log = new ExerciseLog($db);
 
 $workout_plan->client_id = $_SESSION['user_id'];
 $workout_plan->getActiveWorkoutPlan();
@@ -17,6 +19,12 @@ $workout_plan->getActiveWorkoutPlan();
 
 $exercice_activity->workout_plan_id = $workout_plan->workout_plan_id;
 $exercice_stmt = $exercice_activity->getExercise();
+
+
+$exercise_log->workplan_id = $workout_plan->workout_plan_id;
+
+$exercise_log_stmt = $exercise_log->getBestRecordCurrentPlan();
+$exercise_log_num = $exercise_log_stmt->rowCount();
 
 
 $require_login = true;
@@ -107,10 +115,68 @@ include_once '../layout/header.php';
             <!-- RIGHT (2 stacked boxes) -->
             <div class="col-md-6 d-flex flex-column">
                 <div class="box flex-fill mb-3 p-3">
+                <div class="mb-3 p-3 rounded" style="background:#2a2a3d;">
+
+                    <!-- Header -->
                     <div class="d-flex align-items-center mb-3 border-bottom border-secondary pb-2">
-                        <i class="bi bi-calendar-week me-2 text-info"></i>
-                        <h5 class="mb-0 text-white">Snapshot Progress</h5>
+                        <i class="bi bi-trophy-fill me-2 text-warning"></i>
+                        <h5 class="mb-0 text-white">Top Progress Snapshot</h5>
                     </div>
+
+                    <?php
+                    if ($exercise_log_num > 0) {
+
+                        $rank = 1;
+
+                        while ($row = $exercise_log_stmt->fetch(PDO::FETCH_ASSOC)) {
+
+                            // medal colors
+                            $badge = "";
+                            if ($rank == 1) {
+                                $badge = "🥇";
+                            } elseif ($rank == 2) {
+                                $badge = "🥈";
+                            } elseif ($rank == 3) {
+                                $badge = "🥉";
+                            } else {
+                                $badge = "#$rank";
+                            }
+                    ?>
+
+                        <!-- Row -->
+                        <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-secondary">
+
+                            <!-- Left: Rank + Name -->
+                            <div class="d-flex align-items-center">
+                                <span class="me-2 fw-bold text-warning"><?php echo $badge; ?></span>
+                                <span class="text-white">
+                                    <?php echo $row['workout'] ?? 'Exercise'; ?>
+                                </span>
+                            </div>
+
+                            <!-- Right: Value + Date (STACKED) -->
+                            <div class="text-end">
+                                <div class="text-info fw-bold">
+                                    <?php echo $row['personal_best']; ?>
+                                </div>
+                                <small class="text-white">
+                                    <i class="bi bi-clock me-1"></i>
+                                    <?php echo $exercise_log->formatDateLabel($row['modified_at']) . " • " . date("M d", strtotime($row['modified_at'])); ?>
+                                </small>
+                            </div>
+
+                        </div>
+
+                    <?php
+                            $rank++;
+                        }
+
+                    } else {
+                        echo "<p class='text-muted text-center mb-0'>No progress yet</p>";
+                    }
+                    ?>
+
+                </div>
                 </div>
                 <div class="box flex-fill p-3"></div>
             </div>

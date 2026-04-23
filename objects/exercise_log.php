@@ -90,5 +90,36 @@ class ExerciseLog{
         return $stmt;
     }
 
+    function getBestRecordCurrentPlan(){
+        
+        $query = "SELECT * 
+                  FROM 
+                    " . $this->table_name . "
+                   WHERE
+                    workplan_id = :workplan_id AND status='finished' 
+                    ORDER BY personal_best DESC
+                    LIMIT 5";
+
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(":workplan_id", $this->workplan_id);
+
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    function formatDateLabel($date) {
+    $timestamp = strtotime($date);
+    $today = strtotime(date("Y-m-d"));
+    $diff = floor(($today - strtotime(date("Y-m-d", $timestamp))) / 86400);
+
+    if ($diff == 0) return "Today";
+    if ($diff == 1) return "Yesterday";
+    if ($diff < 7) return $diff . " days ago";
+
+    return date("M d, Y", $timestamp);
+}
+
 }
 ?>

@@ -239,14 +239,17 @@ class WorkOutPlan{
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $this->workout_plan = $row['workout_plan'];
-        $this->workout_plan_id = $row['workout_plan_id'];
-        $this->workout_plan = $row['workout_plan'];
-        $this->level = $row['level'];
-        $this->workout_plan = $row['workout_plan'];
-        $this->status = $row['status'];
-        $this->duration = $row['duration'];
-        $this->day_per_week = $row['day_per_week'];
+        if ($row) {
+            $this->workout_plan = $row['workout_plan'];
+            $this->workout_plan_id = $row['workout_plan_id'];
+            $this->workout_plan = $row['workout_plan'];
+            $this->level = $row['level'];
+            $this->workout_plan = $row['workout_plan'];
+            $this->status = $row['status'];
+            $this->duration = $row['duration'];
+            $this->day_per_week = $row['day_per_week'];
+            return true;
+        }
     }
 
 
