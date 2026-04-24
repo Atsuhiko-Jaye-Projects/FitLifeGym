@@ -466,10 +466,12 @@ include '../layout/header.php';
 </div>
 
 
-<?php 
+<?php
+include_once "../gen_modal/cancellation_plan_modal.php"; 
 include_once "../gen_modal/edit_profile_modal.php";
 include_once "../gen_modal/exercise_log_modal.php";
 include_once "../gen_modal/workout_plan_modal.php";
+
 include_once "../layout/footer.php"; 
 ?>
 
