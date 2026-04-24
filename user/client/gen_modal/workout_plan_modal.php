@@ -22,6 +22,7 @@
                     </span>
                 </div>
 
+                <p><strong>Workout Plan ID:</strong> <?php echo $workout_plan->workout_plan_id ?? 'N/A'; ?></p>
                 <p><strong>Plan:</strong> <?php echo $workout_plan->workout_plan ?? 'N/A'; ?></p>
                 <p><strong>Level:</strong> <?php echo $workout_plan->level ?? 'N/A'; ?></p>
                 <p><strong>Duration:</strong> <?php echo $workout_plan->duration ?? 'N/A'; ?></p>

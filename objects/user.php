@@ -192,7 +192,8 @@ class User{
                 lastname = :lastname,
                 email_address = :email_address,
                 contact_no = :contact_no,
-                modified_at = :modified_at";
+                modified_at = :modified_at,
+                profile_image = :profile_image";
 
         // Only include password if it's not empty
         if (!empty($this->password)) {
@@ -216,6 +217,8 @@ class User{
         if (!empty($this->password)) {
             $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
             $stmt->bindParam(":password", $hashedPassword);
+        }elseif(!empty($this->profile_image)){
+            $stmt->bindParam(":profile_image", $this->profile_image);
         }
 
         return $stmt->execute();
@@ -255,6 +258,54 @@ class User{
         $stmt->execute();
 
         return $stmt->rowCount() > 0;
+    }
+
+    function uploadImage() {
+        if (!isset($_FILES['image']) || $_FILES['image']['error'] !== 0) {
+            return ["status" => false, "message" => "No file uploaded or upload error."];
+        }
+
+        $file = $_FILES['image'];
+
+        // Allowed types
+        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+
+        $fileName = $file['name'];
+        $fileTmp = $file['tmp_name'];
+        $fileSize = $file['size'];
+        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        // Validate type
+        if (!in_array($fileExt, $allowedTypes)) {
+            return ["status" => false, "message" => "Invalid file type."];
+        }
+
+        // Validate size (2MB max)
+        if ($fileSize > 2 * 1024 * 1024) {
+            return ["status" => false, "message" => "File too large (max 2MB)."];
+        }
+
+        // Target directory
+        $targetDir = "../uploads/{$this->id}/";
+
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        // Unique filename
+        $newFileName = uniqid("IMG_", true) . "." . $fileExt;
+        $targetPath = $targetDir . $newFileName;
+
+        // Move file
+        if (move_uploaded_file($fileTmp, $targetPath)) {
+            return [
+                "status" => true,
+                "file_path" => $targetPath,
+                "file_name" => $newFileName
+            ];
+        } else {
+            return ["status" => false, "message" => "Upload failed."];
+        }
     }
 }
 

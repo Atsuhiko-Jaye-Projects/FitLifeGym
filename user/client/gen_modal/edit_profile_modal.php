@@ -76,9 +76,9 @@
                     <input type="hidden" name="user_id" value="<?php echo $user->id; ?>">
                     <!-- Profile Top Center -->
                     <div class="profile-container">
-                        <img src="<?php echo !empty($user->profile_image) ? $user->profile_image : $base_url . 'assets/images/logo.png'; ?>"
+                        <img src="<?php echo !empty($image_path) ? $image_path : $base_url . 'assets/images/logo.png'; ?>"
                              id="preview" class="profile-preview">
-                        <input type="file" name="profile_pic" 
+                        <input type="file" name="image" 
                                class="form-control file-input" 
                                id="fileInput" accept="image/*">
                         <small class="text-muted d-block mt-1">
@@ -124,8 +124,7 @@
                                     maxlength="11"
                                     inputmode="numeric"
                                     title="Enter a valid 11-digit number starting with 09 (e.g. 09533307696)"
-                                    value="<?php echo $user->contact_no; ?>"
-                                    required>
+                                    value="<?php echo $user->contact_no; ?>">
                                 <label>Contact No</label>
                             </div>
                         </div>

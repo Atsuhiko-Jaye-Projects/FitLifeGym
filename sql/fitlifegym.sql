@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 21, 2026 at 03:57 PM
+-- Generation Time: Apr 24, 2026 at 06:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -156,17 +156,18 @@ CREATE TABLE `users` (
   `modified_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `access_level` varchar(25) NOT NULL,
   `first_time_logged_in` int(11) NOT NULL DEFAULT 1,
-  `existing_plan` int(11) NOT NULL DEFAULT 0
+  `existing_plan` int(11) NOT NULL DEFAULT 0,
+  `profile_image` varchar(555) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `password`, `contact_no`, `created_at`, `modified_at`, `access_level`, `first_time_logged_in`, `existing_plan`) VALUES
-(1, 'Alexis', 'Dumale', 'ajcodalify@gmail.com', '$2y$10$zPorEKYvwaPhsiT/c4myiuQLEoJ.NPxWEIKqzcSgIVbO9VTje5aNu', '09533307696', '2026-04-02 20:09:16', '2026-04-19 01:25:41', 'Client', 0, 1),
-(2, 'Alexis', 'De Leon', 'alexisdumale@gmail.com', '$2y$10$4C99ZivsNabiuyfhXb0fH.lcz6FukOriEsa664z8w5j19.xgY0Lqq', '09772639814', '2026-04-02 20:10:42', '2026-04-09 04:43:21', 'Client', 1, 0),
-(3, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '$2y$10$DZl4uHLuOp1h6iJojKUhDOp6gjnTj051vabOF9HzS3sZBzpOsDTcC', '09533307696', '2026-04-21 21:30:53', '2026-04-21 13:39:20', 'Client', 0, 0);
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `password`, `contact_no`, `created_at`, `modified_at`, `access_level`, `first_time_logged_in`, `existing_plan`, `profile_image`) VALUES
+(1, 'Alexis Jaye', 'Dumale', 'ajcodalify@gmail.com', '$2y$10$zPorEKYvwaPhsiT/c4myiuQLEoJ.NPxWEIKqzcSgIVbO9VTje5aNu', '09324435144', '2026-04-02 20:09:16', '2026-04-24 03:57:40', 'Client', 0, 1, 'IMG_69eaea344b2d64.92371690.png'),
+(2, 'Alexis', 'De Leon', 'alexisdumale@gmail.com', '$2y$10$4C99ZivsNabiuyfhXb0fH.lcz6FukOriEsa664z8w5j19.xgY0Lqq', '09772639814', '2026-04-02 20:10:42', '2026-04-09 04:43:21', 'Client', 1, 0, ''),
+(3, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '$2y$10$DZl4uHLuOp1h6iJojKUhDOp6gjnTj051vabOF9HzS3sZBzpOsDTcC', '09533307696', '2026-04-21 21:30:53', '2026-04-21 13:39:20', 'Client', 0, 0, '');
 
 -- --------------------------------------------------------
 

@@ -177,13 +177,16 @@ if ($_POST) {
 
     else {
 
+        $result = $user->uploadImage();
+
         $user->password = null;
 
-        if ($user->UpdateUserProfile()) {
+        // Only set image if upload is successful
+        if ($result['status']) {
+            $user->profile_image = $result['file_name'];
+        }
 
-            // destroy session FIRST
-            session_unset();
-            session_destroy();
+        if ($user->UpdateUserProfile()) {
 
             echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
             <script>
@@ -193,11 +196,10 @@ if ($_POST) {
                         title: 'Success',
                         text: 'Profile updated successfully!',
                         allowOutsideClick: false
-                    }).then(() => {
-                        window.location.href = 'signin.php';
                     });
                 }, 100);
             </script>";
+
         } else {
 
             echo "<script>
@@ -231,7 +233,16 @@ include '../layout/header.php';
             
             <!-- Profile Picture -->
             <div class="me-3">
-                <img src="../../../assets/images/logo.png" 
+                <?php 
+                    $raw_image = $user->profile_image;
+                    $image_path = null;
+                    if (!empty($raw_image)) {
+                        $image_path = "{$base_url}user/client/uploads/{$_SESSION['user_id']}/{$raw_image}";
+                    }else{
+                        $image_path = "../../../assets/images/logo.png";
+                    }
+                ?>
+                <img src="<?php echo $image_path; ?>" 
                     alt="Profile Picture" 
                     class="rounded-circle"
                     style="width: 80px; height: 80px; object-fit: cover;">
@@ -239,7 +250,7 @@ include '../layout/header.php';
 
             <!-- Welcome Text -->
             <div>
-                <h2 class="mb-1">Welcome Back <?php echo $_SESSION['firstname']; ?>!</h2>
+                <h2 class="mb-1">Welcome Back <?php echo $user->firstname; ?>!</h2>
                 <p class="mb-0">Your personal fitness hub — track, train & transform.</p>
             </div>
             
