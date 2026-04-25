@@ -307,6 +307,30 @@ class User{
             return ["status" => false, "message" => "Upload failed."];
         }
     }
+
+    function UpdateExistingPlan(){
+
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                SET
+                    existing_plan = '0',
+                    modified_at = :modified_at
+                WHERE    
+                    id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->modified_at = date("Y-m-d H:i:s");
+
+        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":modified_at", $this->modified_at);
+
+        if($stmt->execute()){
+            return $stmt->rowCount() > 0; // true if updated
+        }
+
+        return false;
+    }
 }
 
 

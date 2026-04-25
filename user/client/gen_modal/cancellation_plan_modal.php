@@ -34,9 +34,9 @@
                 </button>
 
                 <!-- CONFIRM CANCEL ACTION -->
-                <form method="POST" action="cancel_workout.php">
+                <form id="cancelWorkoutForm">
                     <input type="hidden" name="workout_plan_id"
-                           value="<?php echo $workout_plan->workout_plan_id ?? ''; ?>">
+                        value="<?php echo $workout_plan->workout_plan_id ?? ''; ?>">
 
                     <button type="submit" class="btn btn-danger">
                         <i class="bi bi-check-circle me-1"></i>

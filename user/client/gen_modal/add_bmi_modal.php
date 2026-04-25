@@ -53,11 +53,6 @@ body {
 }
 </style>
 
-<div class="container mt-5 text-center">
-  <button class="btn modern-btn" data-bs-toggle="modal" data-bs-target="#bmiModal">
-    Open BMI Recorder
-  </button>
-</div>
 
 <!-- ===================================== -->
 <!-- BMI MODAL -->

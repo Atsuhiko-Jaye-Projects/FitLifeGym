@@ -17,9 +17,6 @@ $exercise_activity = new ExerciseActivity($db);
 $require_login = true;
 include_once "../../../login_checker.php";
 
-// USER
-$fullname = $_SESSION['firstname'] . " " . ($_SESSION['lastname'] ?? "");
-$email = $_SESSION['email'] ?? "user@email.com";
 
 // BMI
 $BMI_record->client_id = $_SESSION['user_id'];

@@ -227,29 +227,54 @@ class WorkOutPlan{
     function getActiveWorkoutPlan(){
 
         $query = "SELECT * FROM 
-                    " . $this->table_name ." 
-                    WHERE client_id = :client_id AND status = 'Active'
-                    LIMIT 0,1";
+                    " . $this->table_name . " 
+                WHERE client_id = :client_id 
+                    AND status = 'Active'
+                ORDER BY workout_plan_id DESC
+                LIMIT 1";
         
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":client_id", $this->client_id);
-
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            $this->workout_plan = $row['workout_plan'];
             $this->workout_plan_id = $row['workout_plan_id'];
-            $this->workout_plan = $row['workout_plan'];
-            $this->level = $row['level'];
-            $this->workout_plan = $row['workout_plan'];
-            $this->status = $row['status'];
-            $this->duration = $row['duration'];
-            $this->day_per_week = $row['day_per_week'];
+            $this->workout_plan    = $row['workout_plan'];
+            $this->level           = $row['level'];
+            $this->status          = $row['status'];
+            $this->duration        = $row['duration'];
+            $this->day_per_week    = $row['day_per_week'];
+
             return true;
         }
+
+        return false;
+    }
+
+    function cancelWorkoutPlan(){
+        $query = "UPDATE 
+                    " . $this->table_name . "
+                SET
+                    status = 'Cancelled',
+                    modified_at = :modified_at
+                WHERE    
+                    workout_plan_id = :workout_plan_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->modified_at = date("Y-m-d H:i:s");
+
+        $stmt->bindParam(":workout_plan_id", $this->workout_plan_id);
+        $stmt->bindParam(":modified_at", $this->modified_at);
+
+        if($stmt->execute()){
+            return $stmt->rowCount() > 0; // true if updated
+        }
+
+        return false;
     }
 
 

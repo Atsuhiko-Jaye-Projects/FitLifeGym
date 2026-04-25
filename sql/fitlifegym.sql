@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2026 at 06:09 AM
+-- Generation Time: Apr 25, 2026 at 04:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -165,7 +165,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `password`, `contact_no`, `created_at`, `modified_at`, `access_level`, `first_time_logged_in`, `existing_plan`, `profile_image`) VALUES
-(1, 'Alexis Jaye', 'Dumale', 'ajcodalify@gmail.com', '$2y$10$zPorEKYvwaPhsiT/c4myiuQLEoJ.NPxWEIKqzcSgIVbO9VTje5aNu', '09324435144', '2026-04-02 20:09:16', '2026-04-24 03:57:40', 'Client', 0, 1, 'IMG_69eaea344b2d64.92371690.png'),
+(1, 'Alexis Jaye', 'Dumale', 'ajcodalify@gmail.com', '$2y$10$zPorEKYvwaPhsiT/c4myiuQLEoJ.NPxWEIKqzcSgIVbO9VTje5aNu', '09324435144', '2026-04-02 20:09:16', '2026-04-25 02:01:59', 'Client', 0, 1, 'IMG_69eaea344b2d64.92371690.png'),
 (2, 'Alexis', 'De Leon', 'alexisdumale@gmail.com', '$2y$10$4C99ZivsNabiuyfhXb0fH.lcz6FukOriEsa664z8w5j19.xgY0Lqq', '09772639814', '2026-04-02 20:10:42', '2026-04-09 04:43:21', 'Client', 1, 0, ''),
 (3, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '$2y$10$DZl4uHLuOp1h6iJojKUhDOp6gjnTj051vabOF9HzS3sZBzpOsDTcC', '09533307696', '2026-04-21 21:30:53', '2026-04-21 13:39:20', 'Client', 0, 0, '');
 
@@ -260,7 +260,7 @@ CREATE TABLE `workout_plans` (
 --
 
 INSERT INTO `workout_plans` (`id`, `workout_plan_id`, `client_id`, `workout_plan`, `level`, `duration`, `day_per_week`, `current_bmi`, `created_at`, `modified_at`, `status`, `remaining_session`, `total_weeks`) VALUES
-(44, 'WORKOUT_EVC057_092541', 1, 'Light strength training + cardio + mobility', 'Beginner', 4, 3, '21.22', '2026-04-19 09:25:41', '2026-04-19 01:25:41', 'Active', 0, 0);
+(44, 'WORKOUT_EVC057_092541', 1, 'Light strength training + cardio + mobility', 'Beginner', 4, 3, '21.22', '2026-04-19 09:25:41', '2026-04-25 01:53:36', 'Active', 0, 0);
 
 --
 -- Indexes for dumped tables

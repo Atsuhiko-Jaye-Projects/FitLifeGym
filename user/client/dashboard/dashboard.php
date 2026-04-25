@@ -178,7 +178,58 @@ include_once '../layout/header.php';
 
                 </div>
                 </div>
-                <div class="box flex-fill p-3"></div>
+                <div class="box flex-fill p-3">
+
+                    <div class="d-flex align-items-center mb-3 border-bottom border-secondary pb-2">
+                        <i class="bi bi-trophy-fill me-2 text-warning"></i>
+                        <h5 class="mb-0 text-white">Top Progress Snapshot</h5>
+                    </div>
+
+                    <div class="row g-2" id="snapshotGallery">
+
+                        <?php
+                        $userId = $_SESSION['user_id'];
+                        $dir = "../../../uploads/$userId/snapshots/";
+
+                        $images = glob($dir . "*.{jpg,jpeg,png}", GLOB_BRACE);
+
+                        if (!empty($images)) {
+
+                            foreach ($images as $img) {
+
+                                $imgUrl = str_replace("../../../", $base_url, $img);
+
+                                echo '
+                                <div class="col-6 col-md-4">
+                                    <img src="'.$imgUrl.'" 
+                                        class="w-100 snapshot-img"
+                                        style="height:120px; object-fit:cover; cursor:pointer; border-radius:8px;">
+                                </div>';
+                            }
+
+                        } else {
+
+                            echo '
+                            <div class="col-12 text-center text-secondary py-3" id="emptySnapshot">
+                                No snapshots yet
+                            </div>';
+                        }
+                        ?>
+
+                        <!-- ADD BUTTON -->
+                        <div class="col-6 col-md-4">
+                            <label class="w-100 h-100 d-flex align-items-center justify-content-center border border-secondary rounded"
+                                style="height:120px; cursor:pointer;">
+
+                                <i class="bi bi-plus-circle fs-2 text-light"></i>
+
+                                <input type="file" id="snapshotInput" hidden accept="image/*">
+                            </label>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
         </div>
 

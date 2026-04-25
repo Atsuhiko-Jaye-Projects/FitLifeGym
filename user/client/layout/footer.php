@@ -322,4 +322,69 @@ document.querySelectorAll('.timer-btn').forEach(btn => {
     updateCountdown();
     setInterval(updateCountdown, 1000);
 });
+
+
+document.getElementById("cancelWorkoutForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const form = this;
+    const formData = new FormData(form);
+
+    fetch("../../../api/utils/cancel_workout.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            Swal.fire("Cancelled!", data.message, "success")
+                .then(() => location.reload());
+        } else {
+            Swal.fire("Error!", data.message, "error");
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            title: "Error!",
+            text: "Something went wrong.",
+            icon: "error"
+        });
+        console.error(error);
+    });
+});
+
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const input = document.getElementById("snapshotInput");
+    const gallery = document.getElementById("snapshotGallery");
+
+    input.addEventListener("change", function () {
+
+        if (!this.files.length) return;
+
+        let formData = new FormData();
+        formData.append("snapshot", this.files[0]);
+
+        fetch("../../../objects/upload_snapshot.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.status === "success") {
+                location.reload(); // simple refresh (safe approach)
+            } else {
+                alert(data.message);
+            }
+
+        })
+        .catch(err => console.error(err));
+    });
+
+});
 </script>
