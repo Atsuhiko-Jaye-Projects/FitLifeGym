@@ -20,17 +20,21 @@ if (isset($_SESSION['user_id'])) {
     $BMI_record->client_id = $_SESSION['user_id'];
     
     if ($BMI_record->checkBmiRecord()) {
+        // show the current bmi record
         $show_plan_button = true;
         $category = $BMI_record->bmi_classification;
+        // $BMI_value = $BMI_record->bmi;
     }else{
         $show_plan_button = false;
         $category = $BMI_record->bmi_classification;
+        // $BMI_value = $BMI_record->bmi;
     }
 }
 
 if ($_POST) {
     if (isset($_POST['action']) && $_POST['action'] === "record_bmi") {
 
+        // Assign BMI values safely
         $BMI_record->client_id = $_SESSION['user_id'];
         $BMI_record->weight = $_POST['weight'] ?? 0;
         $BMI_record->height = $_POST['height'] ?? 0;
@@ -39,11 +43,14 @@ if ($_POST) {
 
         if ($BMI_record->createBMIRecord()) {
 
+            // Update user's first_time_logged_in
             $user->id = $_SESSION['user_id'];
-            $user->updateFLI();
+            $user->updateFLI();  // make sure this updates DB
 
+            // Update session
             $_SESSION['first_time_logged_in'] = 0;
 
+            // Show SweetAlert and optionally redirect
             echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
             echo '<script>
                 Swal.fire({
@@ -52,11 +59,12 @@ if ($_POST) {
                     text: "Your BMI has been successfully saved.",
                     confirmButtonText: "OK"
                 }).then(() => {
+                    // Optional: redirect after alert
                     window.location.href = "index.php";
                 });
             </script>';
         } else {
-
+            // Optional: alert if save fails
             echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
             echo '<script>
                 Swal.fire({
@@ -75,6 +83,8 @@ include_once "../../login_checker.php";
 
 $page_title = "index";
 include 'layout/header.php'; 
+
+
 
 
 if ($_SESSION['first_time_logged_in'] == 1) {
@@ -101,193 +111,274 @@ if ($_SESSION['first_time_logged_in'] == 1) {
             </button>
         </div>
     </div>
+    
 </div>
-
 <?php 
+//include the modal
 include "gen_modal/add_bmi_modal.php";
 
+
+// show the greetings
 }else{
 ?>
 
-<div class="col-md-9 col-lg-10 p-4">
+    <div class="col-md-9 col-lg-10 p-4">
 
-    <div class="hero mb-4 text-white">
-        <h1>Welcome Back <?php echo $_SESSION['firstname']; ?>! 👋</h1>
-        <p>Your personal fitness hub — track, train & transform.</p>
-    </div>
+        <!-- Hero -->
+        <div class="hero mb-4 text-white">
+            <h1>Welcome Back <?php echo $_SESSION['firstname']; ?>! 👋</h1>
+            <p>Your personal fitness hub — track, train & transform.</p>
+        </div>
 
-    <div class="card shadow-sm border-0 bg-dark text-light">
+        <!-- BMI Card -->
+        <div class="card shadow-sm border-0 bg-dark text-light">
 
-        <div class="card-body">
+            <div class="card-body">
 
-            <?php if ($_SESSION['existing_plan'] == 0): ?>
+                <?php if ($_SESSION['existing_plan'] == 0): ?>
 
-                <div class="text-center py-4">
-                    <h4 class="mb-2">🚀 Start Your Fitness Plan</h4>
-                    <p class="text-secondary">
-                        You don’t have a BMI plan yet. Create one and begin tracking your progress.
-                    </p>
+                    <!-- CTA CARD -->
+                    <div class="text-center py-4">
+                        <h4 class="mb-2">🚀 Start Your Fitness Plan</h4>
+                        <p class="text-secondary">
+                            You don’t have a BMI plan yet. Create one and begin tracking your progress.
+                        </p>
 
-                    <a href="<?php echo $base_url; ?>user/client/components/workout_plan/workout_plans.php" 
-                    class="btn btn-primary px-4">
-                        Create Plan
-                    </a>
-                </div>
+                        <a href="<?php echo $base_url; ?>user/client/components/workout_plan/workout_plans.php" 
+                        class="btn btn-primary px-4">
+                            Create Plan
+                        </a>
+                    </div>
 
-            <?php 
-            else: 
-                $workout_plan->client_id = $_SESSION['user_id'];
-                $hasPlan = $workout_plan->getActiveWorkoutPlan();
-            ?>
+                <?php 
+                else: 
+                    $workout_plan->client_id = $_SESSION['user_id'];
+                    $workout_plan->getActiveWorkoutPlan();
+                ?>
 
-            <h5 class="mb-3 text-light">
-                📊 Work Plan: 
-                <span class="badge bg-primary">
-                    <?php echo $workout_plan->workout_plan ?? 'No Workout Plan'; ?>
-                    <?php 
+                <!-- BMI DISPLAY -->
+                <h5 class="mb-3 text-light">
+                    📊 Work Plan: 
+                    <span class="badge bg-primary">
+                        <?php echo $workout_plan->workout_plan ?? 'Beginner Plan'; ?>
+                        <?php 
 
-                        $activity_stmt = null;
-                        $activity_num = 0;
-
-                        if ($hasPlan && $workout_plan->status === "Active") {
-                            $exercise_activity->workout_plan_id = $workout_plan->workout_plan_id;
-                            $activity_stmt = $exercise_activity->readExercise();
-
-                            if ($activity_stmt) {
+                            $activity_stmt = null;
+                            $activity_num = 0;
+                            // get the exercise base on workplan id
+                            if ($workout_plan->status == "Active") {
+                                $exercise_activity->workout_plan_id = $workout_plan->workout_plan_id;
+                                $activity_stmt = $exercise_activity->readExercise();
                                 $activity_num = $activity_stmt->rowCount();
+                                
                             }
-                        }
 
-                    ?>
-                </span>
-            </h5>
+                        ?>
+                    </span>
+                </h5>
 
-            <div class="row text-center">
+                <div class="row text-center">
 
-                <div class="col-md-4">
-                    <div class="p-3 rounded shadow-sm bg-dark text-light border border-secondary">
-                        <h6 class="text-secondary mb-2">BMI</h6>
-                        <h2 class="fw-bold">
-                            <?php echo $BMI_record->bmi ?? '22.5'; ?>
-                        </h2>
-                        <small class="text-secondary">Body Mass Index</small>
+                    <!-- BMI -->
+                    <div class="col-md-4">
+                        <div class="p-3 rounded shadow-sm bg-dark text-light border border-secondary">
+                            <h6 class="text-secondary mb-2">BMI</h6>
+                            <h2 class="fw-bold">
+                                <?php echo $BMI_record->bmi ?? '22.5'; ?>
+                            </h2>
+
+                            <small class="text-secondary">Body Mass Index</small>
+                        </div>
                     </div>
+
+                    <!-- STATUS -->
+                    <div class="col-md-4">
+                        <div class="p-3 rounded shadow-sm bg-dark text-light border border-secondary">
+                            <h6 class="text-secondary mb-2">Status</h6>
+
+                            <h5 class="fw-bold">
+                                <span class="badge bg-success px-3 py-2">
+                                    <?php echo $workout_plan->status ?? 'Active'; ?>
+                                </span>
+                            </h5>
+
+                            <small class="text-secondary">Keep pushing forward 💪</small>
+                        </div>
+                    </div>
+
+                    <!-- CLASSIFICATION -->
+                    <div class="col-md-4">
+                        <div class="p-3 rounded shadow-sm bg-dark text-light border border-secondary">
+                            <h6 class="text-secondary mb-2">Classification</h6>
+
+                            <h5 class="fw-bold">
+                                <?php echo $BMI_record->bmi_classification ?? 'Normal'; ?>
+                            </h5>
+
+                            <small class="text-secondary">Health Category</small>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="col-md-4">
-                    <div class="p-3 rounded shadow-sm bg-dark text-light border border-secondary">
-                        <h6 class="text-secondary mb-2">Status</h6>
-                        <h5 class="fw-bold">
-                            <span class="badge bg-success px-3 py-2">
-                                <?php echo $workout_plan->status ?? 'Active'; ?>
-                            </span>
-                        </h5>
-                        <small class="text-secondary">Keep pushing forward 💪</small>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="p-3 rounded shadow-sm bg-dark text-light border border-secondary">
-                        <h6 class="text-secondary mb-2">Classification</h6>
-                        <h5 class="fw-bold">
-                            <?php echo $BMI_record->bmi_classification ?? 'Normal'; ?>
-                        </h5>
-                        <small class="text-secondary">Health Category</small>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- WORKOUT EXERCISES -->
-            <div class="mt-4">
-
-                <?php
-                // ✅ FIX ONLY HERE (prevent null crash)
-                $rows = [];
-
-                if ($activity_stmt) {
+                <!-- WORKOUT EXERCISES -->
+                <div class="mt-4">
+                    <?php
                     $rows = $activity_stmt->fetchAll(PDO::FETCH_ASSOC);
-                }
 
-                $hasActiveWorkout = false;
+                    $hasActiveWorkout = false;
 
-                if (!empty($rows)) {
                     foreach ($rows as $r) {
-                        if (isset($r['log_status']) && $r['log_status'] === 'In progress') {
+                        if ($r['log_status'] === 'In progress') {
                             $hasActiveWorkout = true;
                             break;
                         }
                     }
-                }
-                ?>
+                    ?>
+                    <?php
+                        echo "<div class='row g-3'>";
 
-                <?php
-                echo "<div class='row g-3'>";
+                        $hasData = false;
 
-                $hasData = false;
+                        foreach ($rows as $row) {
 
-                foreach ($rows as $row) {
+                            $hasData = true;
 
-                    $hasData = true;
+                            echo "<div class='col-md-4'>";
 
-                    echo "<div class='col-md-4'>";
-                    echo "<div class='p-3 rounded shadow-sm bg-dark text-light border border-secondary h-100 position-relative overflow-hidden'>";
+                            echo "<div class='p-3 rounded shadow-sm bg-dark text-light border border-secondary h-100 position-relative overflow-hidden'>";
 
-                    echo "<div style='height:80px; background:linear-gradient(135deg,#0d6efd,#6610f2); border-radius:8px; margin-bottom:10px;'></div>";
 
-                    $youtubeQuery = urlencode($row['name']);
-                    echo "<a href='https://www.youtube.com/results?search_query={$youtubeQuery}' target='_blank' class='btn btn-primary btn-sm float-end'>
-                            <i class='bi bi-youtube'></i>
-                        </a>";
+                                echo "<div style='height:80px; background:linear-gradient(135deg,#0d6efd,#6610f2); border-radius:8px; margin-bottom:10px;'></div>";
 
-                    echo "<h6 class='fw-bold mb-1'>{$row['name']}</h6>";
+                                $youtubeQuery = urlencode($row['name']);
+                                echo "<a 
+                                        href='https://www.youtube.com/results?search_query={$youtubeQuery}'
+                                        target='_blank'
+                                        class='btn btn-primary btn-sm float-end'>
+                                        <i class='bi bi-youtube'></i>
+                                    </a>";
 
-                    echo "<div class='small text-light mb-2'>";
-                    echo "<div>🏋️ Sets: <strong>{$row['set_per_exercise']}</strong></div>";
-                    echo "<div>⏱ Duration: <strong>{$row['duration']} mins</strong></div>";
-                    echo "<div>⏱ Cycle: <strong>{$row['cycle']} cycle</strong></div>";
+                                echo "<h6 class='fw-bold mb-1'>{$row['name']}</h6>";
+
+
+                                echo "<div class='small text-light mb-2'>";
+                                    echo "<div>🏋️ Sets: <strong>{$row['set_per_exercise']}</strong></div>";
+                                    echo "<div>⏱ Duration: <strong>{$row['duration']} mins</strong></div>";
+                                    echo "<div>⏱ Cycle: <strong>{$row['cycle']} cycle</strong></div>";
+                                echo "</div>";
+
+
+                                $progress = $row['progress'] ?? 0;
+
+                                echo "<div class='progress mt-2' style='height:6px; border-radius:10px;'>
+                                        <div id='progressBar{$row['id']}'
+                                            class='progress-bar bg-success'
+                                            style='width: {$progress}%'>
+                                        </div>
+                                    </div>";
+
+
+                                $status = $row['log_status'] ?? 'Start';
+
+                                $badgeClass = match($status) {
+                                    'In progress' => 'bg-warning',
+                                    'finished' => 'bg-success',
+                                    'Start' => 'bg-secondary',
+                                    default => 'bg-secondary'
+                                };
+
+                                echo "<span id='status{$row['id']}' class='badge {$badgeClass} mt-2'>" . ucfirst($status) . "</span><br>";
+
+                                $disabled = ($hasActiveWorkout && $row['log_status'] == null) ? "disabled" : "";
+                                $disable_updatebtn = ($row['log_status'] == "finished" || $row['log_status'] == "In progress") ? "disabled" : "";
+
+                                $startTime = strtotime($row['exercise_started']);
+                                $durationSeconds = $row['duration'] * 60;
+                                $endTime = $startTime + $durationSeconds;
+                                $endTimeFormatted = date('Y-m-d H:i:s', $endTime);
+
+                                if ($row['log_status'] == null) {
+
+                                    echo "<button 
+                                        id='btn{$row['id']}'
+                                        class='btn btn-sm {$badgeClass} mt-3 w-100 workout-btn'
+                                        data-id='{$row['id']}'
+                                        data-workplan-id='{$row['workout_plan_id']}'
+                                        data-name='{$row['name']}'
+                                        data-duration='{$row['duration']}'
+                                        data-sets='{$row['set_per_exercise']}'
+                                        data-day='{$row['day']}'
+                                        data-status='Started'
+                                        onclick='CreateWorkout(this)'
+                                        {$disabled}>
+                                        {$status}
+                                    </button>";
+
+                                } else {
+                                    if ($row['log_status'] == "In progress") {
+                                        echo "
+                                        <label class='form-label text-light'>Personal Best</label>
+                                        <input 
+                                            type='number' 
+                                            id='pb{$row['id']}'
+                                            class='form-control' 
+                                            placeholder='Record your best result' 
+                                            required>
+                                        <small class='text-muted'>Reps, minutes, or score depending on exercise</small>
+                                        ";
+                                    }
+
+                                    echo "<button 
+                                        id='btn{$row['id']}'
+                                        class='btn btn-sm {$badgeClass} mt-3 w-100 timer-btn'
+                                        data-start='" . date('c', strtotime($row['exercise_started'])) . "'
+                                        data-exercise-id='{$row['id']}'
+                                        data-duration='{$row['duration']}'
+                                        data-status='{$row['log_status']}'
+                                        onclick='updateWorkout({$row['id']})'
+                                        {$disable_updatebtn}>
+                                        " . ucfirst($row['log_status']) . "
+                                    </button>";
+                                }
+
+                            echo "</div>";
+                            echo "</div>";
+                        }
+
+                        echo "</div>";
+
+                    // EMPTY STATE (UNCHANGED)
+                    if (!$hasData) {
+                        echo "<div class='col-12 text-center py-5'>";
+                            echo "<div class='p-4 rounded bg-dark border border-secondary'>";
+                                echo "<h5 class='text-warning mb-2'>🏋️ Rest Day Activated</h5>";
+                                echo "<p class='text-secondary mb-0'>No exercises scheduled for today.</p>";
+                            echo "</div>";
+                        echo "</div>";
+                    }
+
                     echo "</div>";
+                    ?>
+                </div>
 
-                    $progress = $row['progress'] ?? 0;
+                <!-- MOTIVATION -->
+                <div class="mt-4 p-3 rounded bg-primary text-white text-center shadow-sm">
+                    <h6 class="mb-1">🔥 Daily Motivation</h6>
+                    <small>
+                        “Consistency beats intensity. Show up today, your future body will thank you.”
+                    </small>
+                </div>
 
-                    echo "<div class='progress mt-2' style='height:6px; border-radius:10px;'>
-                            <div class='progress-bar bg-success' style='width: {$progress}%'></div>
-                        </div>";
-
-                    $status = $row['log_status'] ?? 'Start';
-
-                    $badgeClass = match($status) {
-                        'In progress' => 'bg-warning',
-                        'finished' => 'bg-success',
-                        'Start' => 'bg-secondary',
-                        default => 'bg-secondary'
-                    };
-
-                    echo "<span class='badge {$badgeClass} mt-2'>" . ucfirst($status) . "</span><br>";
-
-                    echo "</div></div>";
-                }
-
-                echo "</div>";
-
-                if (!$hasData) {
-                    echo "<div class='col-12 text-center py-5'>
-                            <div class='p-4 rounded bg-dark border border-secondary'>
-                                <h5 class='text-warning mb-2'>🏋️ Rest Day Activated</h5>
-                                <p class='text-secondary mb-0'>No exercises scheduled for today.</p>
-                            </div>
-                        </div>";
-                }
-                ?>
+                <?php endif; ?>
 
             </div>
 
-            <?php endif; ?>
-
         </div>
-    </div>
-</div>
 
+    </div>
+
+</div>
 <?php
 }
 include 'layout/footer.php'; 

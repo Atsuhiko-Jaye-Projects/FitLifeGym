@@ -4,8 +4,8 @@ header('Content-Type: application/json');
 
 //$api_key = "84d8ea7676msh76a4e10a3644b32p189eaajsn270733f271d7";
 //$api_key = "107f302fd6mshf0a1b2d2cd102c9p1b84b8jsn8754d48f6207";
-$api_key = "4bebdd4178mshb8f77b0636e7cf3p102494jsnad50919c43f5";
-//$api_key = "737704916dmsh0cecf15cc44fed6p149448jsn50a8a1f1b68e";
+// $api_key = "4bebdd4178mshb8f77b0636e7cf3p102494jsnad50919c43f5";
+$api_key = "737704916dmsh0cecf15cc44fed6p149448jsn50a8a1f1b68e";
 
 // 📥 Get JSON input from frontend
 $input = json_decode(file_get_contents("php://input"), true);

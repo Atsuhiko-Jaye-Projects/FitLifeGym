@@ -172,7 +172,7 @@ include_once '../layout/header.php';
                         }
 
                     } else {
-                        echo "<p class='text-muted text-center mb-0'>No progress yet</p>";
+                        echo "<p class='text-light text-center mb-0'>No progress yet</p>";
                     }
                     ?>
 
