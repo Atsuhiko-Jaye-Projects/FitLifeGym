@@ -71,7 +71,7 @@ if ($_POST) {
     $workout_plan->workout_plan = $_POST['plan_name'];
     $workout_plan->client_id = $_SESSION['user_id'] ?? null;
     $workout_plan->duration = $_POST['session_duration'];
-    $workout_plan->level = $_POST['plan_type'];
+    $workout_plan->level = $_POST['level'];
     $workout_plan->day_per_week = $_POST['day_per_week'] ?? null;
     $workout_plan->current_bmi = $_POST['bmi_value'] ?? null;
 
