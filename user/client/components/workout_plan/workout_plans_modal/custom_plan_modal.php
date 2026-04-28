@@ -38,7 +38,7 @@
 
               <div class="col-md-6">
                 <label>Intensity</label>
-                <select name="level" class="form-select modern-input">
+                <select name="plan_type" class="form-select modern-input">
                   <option value="beginner">Beginner</option>
                   <option value="intermediate">Intermediate</option>
                   <option value="advance">Advance</option>
