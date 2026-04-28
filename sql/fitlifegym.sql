@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 25, 2026 at 04:12 AM
+-- Generation Time: Apr 28, 2026 at 11:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -67,7 +67,7 @@ CREATE TABLE `bmi_records` (
 --
 
 INSERT INTO `bmi_records` (`id`, `client_id`, `weight`, `height`, `BMI`, `created_at`, `modified_at`, `bmi_classification`, `status`) VALUES
-(7, 1, 65.00, 175.00, 21.22, '2026-04-12 13:23:13', '2026-04-12 06:02:02', 'Normal', 'No Plan'),
+(7, 1, 90.00, 176.00, 29.05, '2026-04-12 13:23:13', '2026-04-28 07:11:13', 'Overweight', 'No Plan'),
 (8, 3, 80.00, 175.00, 26.12, '2026-04-21 21:39:20', '2026-04-21 13:39:20', 'Overweight', 'No Plan');
 
 -- --------------------------------------------------------
@@ -95,16 +95,29 @@ CREATE TABLE `exercise_activities` (
 --
 
 INSERT INTO `exercise_activities` (`id`, `client_id`, `workout_plan_id`, `name`, `duration`, `units`, `cycle`, `set_per_exercise`, `day`, `created_at`, `modified_at`) VALUES
-(82, 1, 'WORKOUT_EVC057_092541', 'Bodyweight Squats', 5, NULL, 3, 12, 'Sunday', '2026-04-19 09:25:41', '2026-04-19 07:26:18'),
-(83, 1, 'WORKOUT_EVC057_092541', 'Push-Ups (Modified if needed)', 5, NULL, 3, 10, 'Monday', '2026-04-19 09:25:41', '2026-04-19 01:25:41'),
-(84, 1, 'WORKOUT_EVC057_092541', 'Walking or Jogging (Outdoor or Treadmill)', 20, NULL, 0, 0, 'Monday', '2026-04-19 09:25:41', '2026-04-19 01:25:41'),
-(85, 1, 'WORKOUT_EVC057_092541', 'Plank', 3, NULL, 3, 0, 'Monday', '2026-04-19 09:25:41', '2026-04-19 01:25:41'),
-(86, 1, 'WORKOUT_EVC057_092541', 'Rest or Light Activity (e.g., stretching, walking)', 60, NULL, 0, 0, 'Tuesday', '2026-04-19 09:25:41', '2026-04-19 01:25:41'),
-(87, 1, 'WORKOUT_EVC057_092541', 'Dumbbell Deadlifts (Light weight)', 5, NULL, 3, 12, 'Wednesday', '2026-04-19 09:25:41', '2026-04-19 01:25:41'),
-(88, 1, 'WORKOUT_EVC057_092541', 'Dumbbell Shoulder Press', 5, NULL, 3, 12, 'Wednesday', '2026-04-19 09:25:41', '2026-04-19 01:25:41'),
-(89, 1, 'WORKOUT_EVC057_092541', 'Stationary Cycling or brisk walking', 20, NULL, 0, 0, 'Wednesday', '2026-04-19 09:25:41', '2026-04-19 01:25:41'),
-(90, 1, 'WORKOUT_EVC057_092541', 'Bird Dog', 1, NULL, 3, 10, 'Sunday', '2026-04-19 09:25:41', '2026-04-19 04:02:06'),
-(91, 1, 'WORKOUT_EVC057_092541', 'Rest or Light Activity (e.g., stretching, walking)', 1, NULL, 0, 0, 'Sunday', '2026-04-19 09:25:41', '2026-04-19 04:01:20');
+(208, 1, 'WORKOUT_EHF323_151129', 'Brisk Walking or Light Jog on Treadmill', 15, NULL, 0, 0, 'Monday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(209, 1, 'WORKOUT_EHF323_151129', 'Bodyweight Circuit (Repeat 3 Times)', 20, NULL, 0, 0, 'Monday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(210, 1, 'WORKOUT_EHF323_151129', 'Jumping Jacks', 30, NULL, 3, 0, 'Monday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(211, 1, 'WORKOUT_EHF323_151129', 'Bodyweight Squats', 30, NULL, 3, 0, 'Monday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(212, 1, 'WORKOUT_EHF323_151129', 'Push-ups (Modified if needed)', 30, NULL, 3, 0, 'Monday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(213, 1, 'WORKOUT_EHF323_151129', 'Rest', 2, NULL, 0, 0, 'Monday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(214, 1, 'WORKOUT_EHF323_151129', 'Stationary Cycling or Marching in Place', 15, NULL, 0, 0, 'Wednesday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(215, 1, 'WORKOUT_EHF323_151129', 'Circuit (Repeat 3 Times)', 20, NULL, 0, 0, 'Wednesday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(216, 1, 'WORKOUT_EHF323_151129', 'High Knees Marching', 30, NULL, 3, 0, 'Wednesday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(217, 1, 'WORKOUT_EHF323_151129', 'Bodyweight Lunges', 30, NULL, 3, 0, 'Wednesday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(218, 1, 'WORKOUT_EHF323_151129', 'Modified Plank', 30, NULL, 3, 0, 'Wednesday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(219, 1, 'WORKOUT_EHF323_151129', 'Rest', 2, NULL, 0, 0, 'Wednesday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(220, 1, 'WORKOUT_EHF323_151129', 'Jump Rope or Mimic Jump Rope Motion', 15, NULL, 0, 0, 'Friday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(221, 1, 'WORKOUT_EHF323_151129', 'Circuit (Repeat 3 Times)', 20, NULL, 0, 0, 'Friday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(222, 1, 'WORKOUT_EHF323_151129', 'Mountain Climbers (Modified if needed)', 30, NULL, 3, 0, 'Friday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(223, 1, 'WORKOUT_EHF323_151129', 'Glute Bridges', 30, NULL, 3, 0, 'Friday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(224, 1, 'WORKOUT_EHF323_151129', 'Bicycle Crunches (Modified)', 30, NULL, 3, 0, 'Friday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(225, 1, 'WORKOUT_EHF323_151129', 'Rest', 2, NULL, 0, 0, 'Friday', '2026-04-28 15:11:29', '2026-04-28 07:11:29'),
+(226, 1, 'WORKOUT_EHF323_151129', 'Light Cardio (Walking or Easy Cycling)', 1, NULL, 0, 0, 'Tuesday', '2026-04-28 15:11:29', '2026-04-28 07:21:26'),
+(227, 1, 'WORKOUT_EHF323_151129', 'Circuit Review (Repeat 2 Times)', 1, NULL, 0, 0, 'Tuesday', '2026-04-28 15:11:29', '2026-04-28 07:21:29'),
+(228, 1, 'WORKOUT_EHF323_151129', 'Side Leg Raises', 1, NULL, 3, 0, 'Tuesday', '2026-04-28 15:11:29', '2026-04-28 07:21:31'),
+(229, 1, 'WORKOUT_EHF323_151129', 'Seated or Wall Push-ups', 1, NULL, 3, 0, 'Tuesday', '2026-04-28 15:11:29', '2026-04-28 07:21:33'),
+(230, 1, 'WORKOUT_EHF323_151129', 'Deep Breathing & Stretching', 1, NULL, 0, 0, 'Tuesday', '2026-04-28 15:11:29', '2026-04-28 07:21:35');
 
 -- --------------------------------------------------------
 
@@ -133,11 +146,8 @@ CREATE TABLE `training_logs` (
 --
 
 INSERT INTO `training_logs` (`id`, `exercise_id`, `workplan_id`, `workout`, `sets`, `duration`, `status`, `created_at`, `modified_at`, `day`, `progress`, `personal_best`, `cycle`) VALUES
-(103, 90, 'WORKOUT_EVC057_092541', 'Bird Dog', 10, 1.00, 'finished', '2026-04-19 15:13:07', '2026-04-19 07:14:12', 'Sunday', '100', 25, 0),
-(104, 91, 'WORKOUT_EVC057_092541', 'Rest or Light Activity (e.g., stretching, walking)', 0, 1.00, 'finished', '2026-04-19 15:22:36', '2026-04-19 07:23:40', 'Sunday', '100', 5, 0),
-(105, 82, 'WORKOUT_EVC057_092541', 'Bodyweight Squats', 12, 5.00, 'finished', '2026-04-19 15:28:28', '2026-04-19 07:47:53', 'Sunday', '100', 13, 0),
-(106, 83, 'WORKOUT_EVC057_092541', 'Push-Ups (Modified if needed)', 10, 5.00, 'finished', '2026-04-20 14:45:31', '2026-04-20 06:53:53', 'Monday', '100', 11, 0),
-(107, 86, 'WORKOUT_EVC057_092541', 'Rest or Light Activity (e.g., stretching, walking)', 0, 60.00, 'In progress', '2026-04-21 21:52:20', '2026-04-21 13:52:20', 'Tuesday', '50', 0, 0);
+(109, 226, 'WORKOUT_EHF323_151129', 'Light Cardio (Walking or Easy Cycling)', 0, 15.00, 'finished', '2026-04-28 15:20:59', '2026-04-28 07:23:53', 'Tuesday', '100', 5, 0),
+(110, 227, 'WORKOUT_EHF323_151129', 'Circuit Review (Repeat 2 Times)', 0, 1.00, 'finished', '2026-04-28 15:23:56', '2026-04-28 07:30:42', 'Tuesday', '100', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -165,9 +175,38 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email_address`, `password`, `contact_no`, `created_at`, `modified_at`, `access_level`, `first_time_logged_in`, `existing_plan`, `profile_image`) VALUES
-(1, 'Alexis Jaye', 'Dumale', 'ajcodalify@gmail.com', '$2y$10$zPorEKYvwaPhsiT/c4myiuQLEoJ.NPxWEIKqzcSgIVbO9VTje5aNu', '09324435144', '2026-04-02 20:09:16', '2026-04-25 02:01:59', 'Client', 0, 1, 'IMG_69eaea344b2d64.92371690.png'),
+(1, 'Alexis Jaye', 'Dumale', 'ajcodalify@gmail.com', '$2y$10$zPorEKYvwaPhsiT/c4myiuQLEoJ.NPxWEIKqzcSgIVbO9VTje5aNu', '09324435144', '2026-04-02 20:09:16', '2026-04-28 07:11:29', 'Client', 0, 1, 'IMG_69eaea344b2d64.92371690.png'),
 (2, 'Alexis', 'De Leon', 'alexisdumale@gmail.com', '$2y$10$4C99ZivsNabiuyfhXb0fH.lcz6FukOriEsa664z8w5j19.xgY0Lqq', '09772639814', '2026-04-02 20:10:42', '2026-04-09 04:43:21', 'Client', 1, 0, ''),
 (3, 'Juan', 'Dela Cruz', 'juandelacruz@gmail.com', '$2y$10$DZl4uHLuOp1h6iJojKUhDOp6gjnTj051vabOF9HzS3sZBzpOsDTcC', '09533307696', '2026-04-21 21:30:53', '2026-04-21 13:39:20', 'Client', 0, 0, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_bmi_histories`
+--
+
+CREATE TABLE `user_bmi_histories` (
+  `id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `weight` double(5,2) NOT NULL,
+  `height` double(5,2) NOT NULL,
+  `bmi_classification` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `workout_plan_id` varchar(255) NOT NULL,
+  `BMI` double(5,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_bmi_histories`
+--
+
+INSERT INTO `user_bmi_histories` (`id`, `client_id`, `weight`, `height`, `bmi_classification`, `status`, `created_at`, `workout_plan_id`, `BMI`) VALUES
+(5, 1, 90.00, 176.00, 'Overweight', '', '2026-04-28 14:21:55', '', 29.05),
+(6, 1, 90.00, 176.00, 'Overweight', '', '2026-04-28 14:22:48', '', 29.05),
+(7, 1, 90.00, 176.00, 'Overweight', '', '2026-04-28 14:23:32', '', 29.05),
+(8, 1, 90.00, 176.00, 'Overweight', '', '2026-04-28 14:23:43', '', 29.05),
+(9, 1, 90.00, 176.00, 'Overweight', '', '2026-04-28 14:24:48', '', 29.05);
 
 -- --------------------------------------------------------
 
@@ -260,7 +299,8 @@ CREATE TABLE `workout_plans` (
 --
 
 INSERT INTO `workout_plans` (`id`, `workout_plan_id`, `client_id`, `workout_plan`, `level`, `duration`, `day_per_week`, `current_bmi`, `created_at`, `modified_at`, `status`, `remaining_session`, `total_weeks`) VALUES
-(44, 'WORKOUT_EVC057_092541', 1, 'Light strength training + cardio + mobility', 'Beginner', 4, 3, '21.22', '2026-04-19 09:25:41', '2026-04-25 01:53:36', 'Active', 0, 0);
+(53, 'WORKOUT_HLN820_145346', 1, 'Walking + light full-body workouts', 'Beginner', 4, 3, '29.05', '2026-04-28 14:53:46', '2026-04-28 07:11:13', 'Cancelled', 0, 0),
+(54, 'WORKOUT_EHF323_151129', 1, 'Walking + light full-body workouts', 'Beginner', 4, 3, '29.05', '2026-04-28 15:11:29', '2026-04-28 07:11:29', 'Active', 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -297,6 +337,12 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user_bmi_histories`
+--
+ALTER TABLE `user_bmi_histories`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `workouts`
 --
 ALTER TABLE `workouts`
@@ -328,19 +374,25 @@ ALTER TABLE `bmi_records`
 -- AUTO_INCREMENT for table `exercise_activities`
 --
 ALTER TABLE `exercise_activities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
 
 --
 -- AUTO_INCREMENT for table `training_logs`
 --
 ALTER TABLE `training_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `user_bmi_histories`
+--
+ALTER TABLE `user_bmi_histories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `workouts`
@@ -352,7 +404,7 @@ ALTER TABLE `workouts`
 -- AUTO_INCREMENT for table `workout_plans`
 --
 ALTER TABLE `workout_plans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

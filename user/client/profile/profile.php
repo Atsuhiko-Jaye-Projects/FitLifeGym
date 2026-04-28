@@ -6,6 +6,7 @@ include_once '../../../objects/user.php';
 include_once '../../../objects/workout_plan.php'; 
 include_once '../../../objects/exercise_activity.php'; 
 include_once '../../../objects/exercise_log.php'; 
+include_once '../../../objects/bmi_record_history.php'; 
 
 $database = new Database();
 $db = $database->getConnection();
@@ -15,7 +16,7 @@ $user = new User($db);
 $workout_plan = new WorkoutPlan($db);
 $exercise_activity = new ExerciseActivity($db);
 $exercise_log = new ExerciseLog($db);
-
+$BMIRecordHistory = new BMIRecordHistory($db);
 
 if (isset($_SESSION['user_id'])) {
 
@@ -51,8 +52,60 @@ $hasPlan = $workout_plan->getActiveWorkoutPlan();
 $user->id = $_SESSION['user_id'];
 $user->getProfileDetails();
 
+// get user_Bmi History
+$BMIRecordHistory->client_id = $_SESSION['user_id'];
+
+$BRH_stmt = $BMIRecordHistory->getBmiHistory();
+$BRH_num = $BRH_stmt->rowCount();
+
+
+echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
+
 if ($_POST) {
-    // unchanged logic
+
+    if ($_POST['action'] == "record_bmi") {
+
+        $BMIRecordHistory->client_id = $_POST['user_id'];
+        $BMIRecordHistory->height = $_POST['height'];
+        $BMIRecordHistory->weight = $_POST['weight'];
+        $BMIRecordHistory->bmi = $_POST['bmi'];
+        $BMIRecordHistory->bmi_classification = $_POST['bmi_classification'];
+
+        if ($BMIRecordHistory->CreateBMIHistory()) {
+
+            $BMI_record->client_id = $_SESSION['user_id'];
+            $BMI_record->height = $_POST['height'];
+            $BMI_record->weight = $_POST['weight'];
+            $BMI_record->BMI = $_POST['bmi'];
+            $BMI_record->bmi_classification = $_POST['bmi_classification'];
+            
+            $BMI_record->UpdateBmiRecord();
+            echo '<script>
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: "success",
+                        title: "BMI Updated Successfully!",
+                        text: "Your latest BMI record has been updated and saved.",
+                        confirmButtonText: "OK"
+                    });
+                }, 500);
+            </script>';
+
+        } else {
+
+            echo '<script>
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Sorry Something Went Wrong",
+                        text: "Your BMI record could not be updated at this time.",
+                        confirmButtonText: "OK"
+                    });
+                }, 500);
+            </script>';
+
+        }
+    }
 }
 
 $require_login = true;
@@ -127,14 +180,27 @@ include '../layout/header.php';
                     </h1>
 
                     <div class="d-flex align-items-center gap-2 mb-3">
+
+                        <!-- Category -->
                         <span class="badge bg-primary px-2 py-2">
                             <i class="bi bi-activity me-1"></i> Category
                         </span>
 
+                        <!-- BMI Status -->
                         <span class="badge bg-success px-3 py-2">
                             <i class="bi bi-check-circle me-1"></i>
                             <?php echo $category ?? 'No data'; ?>
                         </span>
+
+                        <!-- Push button to far right -->
+                        <div class="ms-auto">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                data-bs-toggle="modal" data-bs-target="#bmiHistoryModal">
+                                <i class="bi bi-clock-history me-1"></i>
+                                History
+                            </button>
+                        </div>
+
                     </div>
 
                     <hr class="border-secondary">
@@ -251,8 +317,8 @@ include '../layout/header.php';
 
                         <div class="text-center py-3">
                             <i class="bi bi-emoji-frown fs-1 text-muted mb-2"></i>
-                            <p class="mb-1 text-secondary">No active workout plan</p>
-                            <small class="text-muted">Start a program to track your fitness progress</small>
+                            <p class="mb-1 text-secondary text-white">No active workout plan</p>
+                            <small class="text-white">Start a program to track your fitness progress</small>
                         </div>
 
                     <?php endif; ?>
@@ -309,6 +375,7 @@ include '../layout/header.php';
 </div>
 
 <?php
+include_once "../gen_modal/bmi_history_modal.php";
 include_once "../gen_modal/add_bmi_modal.php";
 include_once "../gen_modal/cancellation_plan_modal.php"; 
 include_once "../gen_modal/edit_profile_modal.php";

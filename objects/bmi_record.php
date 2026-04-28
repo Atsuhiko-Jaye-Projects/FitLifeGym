@@ -69,6 +69,57 @@ class BMIRecord{
         }
     }
 
+    function UpdateBmiRecord(){
+
+        $query = "UPDATE 
+                " . $this->table_name . "
+                SET
+                weight = :weight,
+                height = :height,
+                BMI = :BMI,
+                bmi_classification = :bmi_classification,
+                modified_at = :modified_at,
+                status = 'No Plan'
+                WHERE
+                client_id = :client_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->modified_at = date("Y-m-d H:i:s");
+
+        $stmt->bindParam(":weight", $this->weight);
+        $stmt->bindParam(":height", $this->height);
+        $stmt->bindParam(":BMI", $this->BMI);
+        $stmt->bindParam(":bmi_classification", $this->bmi_classification);
+        $stmt->bindParam(":modified_at", $this->modified_at);
+        $stmt->bindParam(":client_id", $this->client_id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function UpdatePlanStatus(){
+        
+        $query = "UPDATE 
+                   " . $this->table_name . "
+                   SET
+                   modified_at = :modified_at,
+                   status = 'No Plan'
+                   WHERE
+                    client_id =:client_id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->modified_at = date("Y-m-d H:i:s");
+        $stmt->bindParam(":modified_at", $this->modified_at);
+        $stmt->bindParam(":client_id", $this->client_id);
+
+        $stmt->execute();
+    }
+
 
 
 

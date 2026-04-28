@@ -72,6 +72,7 @@ body {
 
         <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
           <input type="hidden" name="action" value="record_bmi">
+          <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
           <div class="container-fluid">
             <div class="row g-3 align-items-center">
 

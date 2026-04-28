@@ -39,7 +39,7 @@
                     </ul>
 
                 <?php else: ?>
-                    <p class="text-muted text-center">No activity yet.</p>
+                    <p class="text-white text-center">No activity yet.</p>
                 <?php endif; ?>
 
             </div>
