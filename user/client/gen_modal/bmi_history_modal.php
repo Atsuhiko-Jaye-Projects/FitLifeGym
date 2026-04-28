@@ -41,7 +41,7 @@
             } else {
 
                 echo '
-                <div class="text-center text-muted py-4">
+                <div class="text-center text-light py-4">
                     <i class="bi bi-inbox fs-3 d-block mb-2"></i>
                     No BMI history found.
                 </div>
