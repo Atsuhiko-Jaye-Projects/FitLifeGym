@@ -212,13 +212,12 @@ class User{
         $stmt->bindParam(":email_address", $this->email_address);
         $stmt->bindParam(":contact_no", $this->contact_no);
         $stmt->bindParam(":modified_at", $this->modified_at);
+        $stmt->bindParam(":profile_image", $this->profile_image);
 
-        // Hash password only if provided
+        // password only if provided
         if (!empty($this->password)) {
             $hashedPassword = password_hash($this->password, PASSWORD_DEFAULT);
             $stmt->bindParam(":password", $hashedPassword);
-        }elseif(!empty($this->profile_image)){
-            $stmt->bindParam(":profile_image", $this->profile_image);
         }
 
         return $stmt->execute();

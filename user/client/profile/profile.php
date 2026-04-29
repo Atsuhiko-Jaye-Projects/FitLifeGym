@@ -123,7 +123,7 @@ if ($_POST) {
         $user->lastname = $_POST['lastname'];
         $user->contact_no = $_POST['contact_number'];
         $user->email_address = $_POST['email_address'];
-
+        
         $newPassword = $_POST['new_password'];
         $confirmPassword = $_POST['confirm_password'];
         $currentPassword = $_POST['current_password'];
@@ -209,9 +209,19 @@ if ($_POST) {
             else {
 
                 $user->password = $newPassword;
+                if (!empty($_FILES['image']['name'])) {
 
+                    $result = $user->uploadImage();
+
+                    if ($result['status']) {
+                        $user->profile_image = $result['file_name'];
+                    } else {
+                        echo $result['message'];
+                        exit;
+                    }
+                }
                 if ($user->UpdateUserProfile()) {
-
+                    
                     echo "<script>
                         setTimeout(function() {
                             Swal.fire({
@@ -240,10 +250,22 @@ if ($_POST) {
 
         else {
 
+            
+            if (!empty($_FILES['image']['name'])) {
+
+                $result = $user->uploadImage();
+
+                if ($result['status']) {
+                    $user->profile_image = $result['file_name'];
+                } else {
+                    echo $result['message'];
+                    exit;
+                }
+            }
+
             $user->password = null;
-
             if ($user->UpdateUserProfile()) {
-
+                
                 echo "<script>
                     setTimeout(function() {
                         Swal.fire({
