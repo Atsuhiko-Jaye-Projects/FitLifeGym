@@ -49,8 +49,6 @@ $exercise_log_num = $exercise_log_stmt->rowCount();
 $workout_plan->client_id = $_SESSION['user_id'];
 $hasPlan = $workout_plan->getActiveWorkoutPlan();
 
-$user->id = $_SESSION['user_id'];
-$user->getProfileDetails();
 
 // get user_Bmi History
 $BMIRecordHistory->client_id = $_SESSION['user_id'];
@@ -58,11 +56,17 @@ $BMIRecordHistory->client_id = $_SESSION['user_id'];
 $BRH_stmt = $BMIRecordHistory->getBmiHistory();
 $BRH_num = $BRH_stmt->rowCount();
 
+$user->id = $_SESSION['user_id'];
+$user->getProfileDetails();
 
 echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
 
+
 if ($_POST) {
 
+    // =========================
+    // RECORD BMI
+    // =========================
     if ($_POST['action'] == "record_bmi") {
 
         $BMIRecordHistory->client_id = $_POST['user_id'];
@@ -78,8 +82,9 @@ if ($_POST) {
             $BMI_record->weight = $_POST['weight'];
             $BMI_record->BMI = $_POST['bmi'];
             $BMI_record->bmi_classification = $_POST['bmi_classification'];
-            
+
             $BMI_record->UpdateBmiRecord();
+
             echo '<script>
                 setTimeout(() => {
                     Swal.fire({
@@ -91,9 +96,8 @@ if ($_POST) {
                 }, 500);
             </script>';
 
-        }elseif($_POST['action']== "update_profile"){
-
         } else {
+
             echo '<script>
                 setTimeout(() => {
                     Swal.fire({
@@ -105,6 +109,165 @@ if ($_POST) {
                 }, 500);
             </script>';
 
+        }
+
+    }
+
+    // =========================
+    // UPDATE PROFILE
+    // =========================
+    elseif ($_POST['action'] == "update_profile") {
+
+        $user->id = $_SESSION['user_id'];
+        $user->firstname = $_POST['firstname'];
+        $user->lastname = $_POST['lastname'];
+        $user->contact_no = $_POST['contact_number'];
+        $user->email_address = $_POST['email_address'];
+
+        $newPassword = $_POST['new_password'];
+        $confirmPassword = $_POST['confirm_password'];
+        $currentPassword = $_POST['current_password'];
+
+        $storedPassword = $user->password;
+
+        // var_dump($user->EmailAlreadyTakenById());
+        // die();
+
+        // ✅ Email check
+        if ($user->EmailAlreadyTakenById()) {
+
+            echo "<script>
+                setTimeout(function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Email address is already taken!'
+                    });
+                }, 100);
+            </script>";
+
+        }
+
+        elseif ($user->ContactAlreadyTakenById()) {
+
+            echo "<script>
+                setTimeout(function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Contact No is already taken'
+                    });
+                }, 100);
+            </script>";
+
+        }
+
+        elseif (!empty($newPassword)) {
+
+            if ($newPassword != $confirmPassword) {
+
+                echo "<script>
+                    setTimeout(function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Passwords do not match!'
+                        });
+                    }, 100);
+                </script>";
+
+            }
+
+            elseif (empty($currentPassword)) {
+
+                echo "<script>
+                    setTimeout(function() {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Required',
+                            text: 'Please enter your current password'
+                        });
+                    }, 100);
+                </script>";
+
+            }
+
+            elseif (!password_verify($currentPassword, $storedPassword)) {
+
+                echo "<script>
+                    setTimeout(function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Current password is incorrect!'
+                        });
+                    }, 100);
+                </script>";
+
+            }
+
+            else {
+
+                $user->password = $newPassword;
+
+                if ($user->UpdateUserProfile()) {
+
+                    echo "<script>
+                        setTimeout(function() {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Profile updated successfully!'
+                            });
+                        }, 100);
+                    </script>";
+
+                } else {
+
+                    echo "<script>
+                        setTimeout(function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Failed to update profile'
+                            });
+                        }, 100);
+                    </script>";
+
+                }
+            }
+        }
+
+        else {
+
+            $user->password = null;
+
+            if ($user->UpdateUserProfile()) {
+
+                echo "<script>
+                    setTimeout(function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Profile updated successfully!',
+                            allowOutsideClick: false
+                        });
+                    }, 100);
+                </script>";
+
+            } else {
+
+                echo "<script>
+                    setTimeout(function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to update profile'
+                        });
+                    }, 100);
+                </script>";
+
+            }
         }
     }
 }

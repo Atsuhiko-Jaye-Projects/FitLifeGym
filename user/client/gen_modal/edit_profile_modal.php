@@ -72,8 +72,9 @@
             </div>
 
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="updadte_profile">
+                
                 <div class="modal-body">
+                    <input type="hidden" name="action" value="update_profile">
                     <input type="hidden" name="user_id" value="<?php echo $user->id; ?>">
                     <!-- Profile Top Center -->
                     <div class="profile-container">
