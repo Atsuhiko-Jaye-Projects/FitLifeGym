@@ -181,10 +181,6 @@ if ($_POST) {
 
         if ($user->UpdateUserProfile()) {
 
-            // destroy session FIRST
-            session_unset();
-            session_destroy();
-
             echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
             <script>
                 setTimeout(function() {
@@ -193,9 +189,7 @@ if ($_POST) {
                         title: 'Success',
                         text: 'Profile updated successfully!',
                         allowOutsideClick: false
-                    }).then(() => {
-                        window.location.href = 'signin.php';
-                    });
+                    })
                 }, 100);
             </script>";
         } else {
