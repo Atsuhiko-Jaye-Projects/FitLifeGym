@@ -91,8 +91,9 @@ if ($_POST) {
                 }, 500);
             </script>';
 
-        } else {
+        }elseif($_POST['action']== "update_profile"){
 
+        } else {
             echo '<script>
                 setTimeout(() => {
                     Swal.fire({
